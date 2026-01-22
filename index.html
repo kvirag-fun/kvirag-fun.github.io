@@ -159,7 +159,11 @@
 
         // Initialize and start
         randomFood();
-        setInterval(gameLoop, 150);
+        if (score > 100) {
+            setInterval(gameLoop, 120);  // Faster after 100 points
+        } else {
+                setInterval(gameLoop, 150);
+        }
     </script>
 </body>
 </html>
