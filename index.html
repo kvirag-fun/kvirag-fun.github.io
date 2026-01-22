@@ -35,7 +35,7 @@
 </head>
 <body>
     <div class="score">Score: <span id="score">0</span></div>
-    <div class="version">v<span id="version">0.0.3</span></div>
+    <div class="version">v<span id="version">0.0.4</span></div>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
     <div class="controls">
         <div>Use ARROW KEYS to move</div>
@@ -161,7 +161,15 @@
         // Initialize and start
         randomFood();
         if (score > 100) {
-            setInterval(gameLoop, 120);  // Faster after 100 points
+            setInterval(gameLoop, 50);  // Faster after 100 points
+        } else if (score > 80) {
+            setInterval(gameLoop, 70);  // Faster after 80 points
+        } else if (score > 60) {
+            setInterval(gameLoop, 90);  // Faster after 60 points
+        } else if (score > 40) {
+            setInterval(gameLoop, 110);  // Faster after 40 points
+        } else if (score > 20) {
+            setInterval(gameLoop, 130);  // Faster after 20 points
         } else {
                 setInterval(gameLoop, 150);
         }
