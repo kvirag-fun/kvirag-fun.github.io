@@ -1,1 +1,37 @@
-<!DOCTYPE html><html><head><title>My Site</title></head><body><h1>Milujem svoju manželku!</h1></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS Demo</title>
+    <style>
+        body { font-family: Arial; text-align: center; padding: 50px; }
+        #message { font-size: 24px; margin: 20px; transition: all 0.3s; }
+        button { padding: 10px 20px; font-size: 16px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>My GitHub Pages JS Demo</h1>
+    <div id="message">Click the button!</div>
+    <button onclick="changeMessage()">Change Me</button>
+
+    <script>
+        let clicks = 0;
+        const messages = [
+            "Hello from JavaScript!",
+            "You clicked once!",
+            "Clicked twice!",
+            "Wow, keep going!",
+            "JavaScript works great on GitHub Pages!"
+        ];
+
+        function changeMessage() {
+            clicks++;
+            const msg = document.getElementById('message');
+            msg.textContent = clicks < messages.length ? messages[clicks] : "Clicked " + clicks + " times!";
+            msg.style.color = clicks % 2 === 0 ? 'blue' : 'red';
+            msg.style.backgroundColor = clicks % 3 === 0 ? '#f0f8ff' : 'white';
+        }
+    </script>
+</body>
+</html>
