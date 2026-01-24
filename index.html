@@ -36,7 +36,7 @@
 </head>
 <body>
     <div class="score">Score: <span id="score">0</span></div>
-    <div class="version">v<span id="version">0.0.14</span></div>
+    <div class="version">v<span id="version">0.0.15</span></div>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
     <div class="controls">
         <div>Use ARROW KEYS to move</div>
@@ -64,6 +64,7 @@
         let score = 0;
         let gameRunning = true;
         let gameSpeed = 150;
+        let gameInterval;
 
         // Generate random food position
         function randomFood() {
@@ -120,7 +121,11 @@
                 score += 10;
                 scoreElement.textContent = score;
 
-                if (score >= 100) gameSpeed = 20;
+                if (score >= 100) {
+                    gameSpeed = 20;
+                    clearInterval(gameInterval);  // Stop old speed
+                    gameInterval = setInterval(gameLoop, gameSpeed);  // Start new speed
+                }
                 
                 randomFood();
             } else {
@@ -171,7 +176,7 @@
 
         // Initialize and start
         randomFood();
-        setInterval(gameLoop, gameSpeed);
+        gameInterval = setInterval(gameLoop, gameSpeed);
     </script>
 </body>
 </html>
