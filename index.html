@@ -36,7 +36,7 @@
 </head>
 <body>
     <div class="score">Score: <span id="score">0</span></div>
-    <div class="version">v<span id="version">0.0.19</span></div>
+    <div class="version">v<span id="version">0.0.20</span></div>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
     <div class="controls">
         <div>Use ARROW KEYS to move</div>
@@ -63,7 +63,7 @@
         let dy = 0;
         let score = 0;
         let gameRunning = true;
-        let gameSpeed = 50;
+        let gameSpeed = 150;
         let gameInterval;
 
         // Generate random food position, but check collision with snake
@@ -128,9 +128,13 @@
                 score += 10;
                 scoreElement.textContent = score;
 
-                if (score >= 90) {gameSpeed = 130;}
-                else if (score >= 180) {gameSpeed = 110;}
-                else if (score >= 270) {gameSpeed = 90;}
+                if (score >= 90) {
+                    gameSpeed = 50;
+                } else if (score >= 180) {
+                    gameSpeed = 110;
+                } else if (score >= 270) {
+                    gameSpeed = 90;
+                }
                 else if (score >= 360) {gameSpeed = 70;}
                 else if (score >= 450) {gameSpeed = 50;}
                 else if (score >= 540) {gameSpeed = 30;}
