@@ -36,11 +36,11 @@
 </head>
 <body>
     <div class="score">Score: <span id="score">0</span></div>
-    <div class="version">v<span id="version">0.0.7</span></div>
+    <div class="version">v<span id="version">0.0.8</span></div>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
     <div class="controls">
         <div>Use ARROW KEYS to move</div>
-        <div id="gameOver" style="display:none; color:#ff4444; font-size:20px; margin-top:10px;">
+        <div id="gameOver" style="height: 30px; visibility: hidden; color:#ff4444; font-size:20px;">
             Game Over! Press any key to restart.
         </div>
     </div>
@@ -124,7 +124,7 @@
         // Game over
         function gameOver() {
             gameRunning = false;
-            gameOverElement.style.display = 'block';
+            gameOverElement.style.visibility = 'visible';
         }
 
         // Restart game
@@ -134,7 +134,7 @@
             dy = 0;
             score = 0;
             scoreElement.textContent = score;
-            gameOverElement.style.display = 'none';
+            gameOverElement.style.visibility = 'hidden';
             gameRunning = true;
             randomFood();
         }
