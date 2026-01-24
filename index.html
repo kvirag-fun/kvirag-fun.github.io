@@ -35,7 +35,7 @@
 </head>
 <body>
     <div class="score">Score: <span id="score">0</span></div>
-    <div class="version">v<span id="version">0.0.5</span></div>
+    <div class="version">v<span id="version">0.0.6</span></div>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
     <div class="controls">
         <div>Use ARROW KEYS to move</div>
@@ -140,12 +140,14 @@
 
         // Handle keyboard input
         document.addEventListener('keydown', (e) => {
+            const LEFT = 37, UP = 38, RIGHT = 39, DOWN = 40;
+        
+            // If game over, restart but keep handling this key for direction
             if (!gameRunning && gameOverElement.style.display === 'block') {
                 restart();
-                return;
+                // do not return here
             }
-
-            const LEFT = 37, UP = 38, RIGHT = 39, DOWN = 40;
+        
             if (e.keyCode === LEFT && dx !== 1) { dx = -1; dy = 0; }
             if (e.keyCode === UP && dy !== 1) { dx = 0; dy = -1; }
             if (e.keyCode === RIGHT && dx !== -1) { dx = 1; dy = 0; }
