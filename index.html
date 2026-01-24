@@ -121,11 +121,13 @@
                 score += 10;
                 scoreElement.textContent = score;
 
-                if (score >= 100) {
-                    gameSpeed = 20;
-                    clearInterval(gameInterval);  // Stop old speed
-                    gameInterval = setInterval(gameLoop, gameSpeed);  // Start new speed
-                }
+                if (score >= 90) {gameSpeed = 130;}
+                else if (score >= 180) {gameSpeed = 110;}
+                else if (score >= 270) {gameSpeed = 90;}
+                else if (score >= 360) {gameSpeed = 70;}
+                
+                clearInterval(gameInterval);  // Stop old speed
+                gameInterval = setInterval(gameLoop, gameSpeed);  // Start new speed
                 
                 randomFood();
             } else {
