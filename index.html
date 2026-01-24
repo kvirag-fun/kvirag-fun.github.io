@@ -36,7 +36,7 @@
 </head>
 <body>
     <div class="score">Score: <span id="score">0</span></div>
-    <div class="version">v<span id="version">0.0.20</span></div>
+    <div class="version">v<span id="version">0.0.21</span></div>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
     <div class="controls">
         <div>Use ARROW KEYS to move</div>
@@ -129,9 +129,9 @@
                 scoreElement.textContent = score;
 
                 if (score >= 90) {
-                    gameSpeed = 50;
+                    gameSpeed = 100;
                 } else if (score >= 180) {
-                    gameSpeed = 110;
+                    gameSpeed = 50;
                 } else if (score >= 270) {
                     gameSpeed = 90;
                 }
