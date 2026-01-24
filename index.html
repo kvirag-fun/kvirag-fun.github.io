@@ -36,7 +36,7 @@
 </head>
 <body>
     <div class="score">Score: <span id="score">0</span></div>
-    <div class="version">v<span id="version">0.0.25</span></div>
+    <div class="version">v<span id="version">0.0.26</span></div>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
     <div class="controls">
         <div>Use ARROW KEYS to move</div>
@@ -162,6 +162,11 @@
             score = 0;
             scoreElement.textContent = score;
             gameOverElement.style.visibility = 'hidden';
+            
+            // Resest game spee&d to default
+            clearInterval(gameInterval);  // Stop old speed
+            gameInterval = setInterval(gameLoop, gameSpeed);  // Start new speed
+            
             gameRunning = true;
             randomFood();
         }
