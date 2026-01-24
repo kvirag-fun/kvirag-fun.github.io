@@ -38,12 +38,15 @@
 <audio id="gameOverSound" preload="auto">
     <source src="ugh.mp3" type="audio/mpeg">
 </audio>
+<audio id="foodEatingSound" preload="auto">
+    <source src="food.mp3" type="audio/mpeg">
+</audio>
 <body>
     <div class="score">
         Score: <span id="score">0</span> |
         High Score: <span id="highScore">0</span>
     </div>
-    <div class="version">v<span id="version">0.0.40</span></div>
+    <div class="version">v<span id="version">0.0.41</span></div>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
     <div class="controls">
         <div>Use ARROW KEYS to move</div>
@@ -172,6 +175,10 @@
 
             // Check food collision
             if (head.x === food.x && head.y === food.y) {
+                const gameOverSound = document.getElementById('foodEatingSound');
+                gameOverSound.currentTime = 0;  // Reset to start
+                gameOverSound.play().catch(e => console.log('Sound play failed:', e));
+                
                 score += 10;
                 scoreElement.textContent = score;
 
