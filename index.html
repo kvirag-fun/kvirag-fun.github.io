@@ -36,7 +36,7 @@
 </head>
 <body>
     <div class="score">Score: <span id="score">0</span></div>
-    <div class="version">v<span id="version">0.0.26</span></div>
+    <div class="version">v<span id="version">0.0.27</span></div>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
     <div class="controls">
         <div>Use ARROW KEYS to move</div>
@@ -131,13 +131,13 @@
                 score += 10;
                 scoreElement.textContent = score;
 
-                if (score >= 990) {gameSpeed = 80} 
-                else if (score >= 810) {gameSpeed = 90}
-                else if (score >= 630) {gameSpeed = 100}
-                else if (score >= 450) {gameSpeed = 110}
-                else if (score >= 270) {gameSpeed = 120}
-                else if (score >= 180) {gameSpeed = 130}
-                else if (score >= 90) {gameSpeed = 140}
+                if (score >= 990) {gameSpeed = 45} 
+                else if (score >= 810) {gameSpeed = 60}
+                else if (score >= 630) {gameSpeed = 75}
+                else if (score >= 450) {gameSpeed = 90}
+                else if (score >= 270) {gameSpeed = 105}
+                else if (score >= 180) {gameSpeed = 50}
+                else if (score >= 90) {gameSpeed = 135}
                 
                 clearInterval(gameInterval);  // Stop old speed
                 gameInterval = setInterval(gameLoop, gameSpeed);  // Start new speed
