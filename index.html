@@ -36,7 +36,7 @@
 </head>
 <body>
     <div class="score">Score: <span id="score">0</span></div>
-    <div class="version">v<span id="version">0.0.17</span></div>
+    <div class="version">v<span id="version">0.0.18</span></div>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
     <div class="controls">
         <div>Use ARROW KEYS to move</div>
@@ -66,12 +66,19 @@
         let gameSpeed = 150;
         let gameInterval;
 
-        // Generate random food position
+        // Generate random food position, but check collision with snake
         function randomFood() {
-            food = {
-                x: Math.floor(Math.random() * tileCount),
-                y: Math.floor(Math.random() * tileCount)
-            };
+            let validPosition = false;
+            
+            while (!validPosition) {
+                food = {
+                    x: Math.floor(Math.random() * tileCount),
+                    y: Math.floor(Math.random() * tileCount)
+                };
+                
+                // Check if food is on any snake segment
+                validPosition = !snake.some(segment => segment.x === food.x && segment.y === food.y);
+            }
         }
 
         // Draw game elements
