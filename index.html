@@ -160,19 +160,7 @@
 
         // Initialize and start
         randomFood();
-        if (score > 100) {
-            setInterval(gameLoop, 50);  // Faster after 100 points
-        } else if (score > 80) {
-            setInterval(gameLoop, 70);  // Faster after 80 points
-        } else if (score > 60) {
-            setInterval(gameLoop, 90);  // Faster after 60 points
-        } else if (score > 40) {
-            setInterval(gameLoop, 110);  // Faster after 40 points
-        } else if (score > 20) {
-            setInterval(gameLoop, 130);  // Faster after 20 points
-        } else {
-                setInterval(gameLoop, 150);
-        }
+        setInterval(gameLoop, 150);
     </script>
 </body>
 </html>
