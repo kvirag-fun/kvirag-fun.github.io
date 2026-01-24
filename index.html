@@ -35,12 +35,15 @@
         }
     </style>
 </head>
+<audio id="gameOverSound" preload="auto">
+    <source src="ugh.mp3" type="audio/mpeg">
+</audio>
 <body>
     <div class="score">
         Score: <span id="score">0</span> |
         High Score: <span id="highScore">0</span>
     </div>
-    <div class="version">v<span id="version">0.0.39</span></div>
+    <div class="version">v<span id="version">0.0.40</span></div>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
     <div class="controls">
         <div>Use ARROW KEYS to move</div>
@@ -196,6 +199,11 @@
         function gameOver() {
             gameRunning = false;
             gameOverElement.style.visibility = 'visible';
+
+            // Play your custom sound
+            const gameOverSound = document.getElementById('gameOverSound');
+            gameOverSound.currentTime = 0;  // Reset to start
+            gameOverSound.play().catch(e => console.log('Sound play failed:', e));
         }
 
         // Restart game
