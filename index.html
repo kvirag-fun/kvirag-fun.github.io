@@ -36,7 +36,7 @@
 </head>
 <body>
     <div class="score">Score: <span id="score">0</span></div>
-    <div class="version">v<span id="version">0.0.10</span></div>
+    <div class="version">v<span id="version">0.0.11</span></div>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
     <div class="controls">
         <div>Use ARROW KEYS to move</div>
@@ -149,13 +149,11 @@
                 return; // Don't process direction change after restart
             }
             
-            // Arrow keys for direction (only when game is running OR after restart)
-            if (gameRunning) {
-                if (e.keyCode === LEFT && dx !== 1) { dx = -1; dy = 0; }
-                if (e.keyCode === UP && dy !== 1) { dx = 0; dy = -1; }
-                if (e.keyCode === RIGHT && dx !== -1) { dx = 1; dy = 0; }
-                if (e.keyCode === DOWN && dy !== -1) { dx = 0; dy = 1; }
-            }
+            // Arrow keys ALWAYS work (removed gameRunning check)
+            if (e.keyCode === LEFT && dx !== 1) { dx = -1; dy = 0; }
+            if (e.keyCode === UP && dy !== 1) { dx = 0; dy = -1; }
+            if (e.keyCode === RIGHT && dx !== -1) { dx = 1; dy = 0; }
+            if (e.keyCode === DOWN && dy !== -1) { dx = 0; dy = 1; }
         });
 
         // Game loop
