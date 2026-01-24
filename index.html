@@ -36,12 +36,12 @@
 </head>
 <body>
     <div class="score">Score: <span id="score">0</span></div>
-    <div class="version">v<span id="version">0.0.9</span></div>
+    <div class="version">v<span id="version">0.0.10</span></div>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
     <div class="controls">
         <div>Use ARROW KEYS to move</div>
         <div id="gameOver" style="height: 30px; visibility: hidden; color:#ff4444; font-size:20px;">
-            Game Over! Press any arrow key to restart.
+            Game Over! Press R to restart.
         </div>
     </div>
 
@@ -141,18 +141,21 @@
 
         // Handle keyboard input
         document.addEventListener('keydown', (e) => {
-            const LEFT = 37, UP = 38, RIGHT = 39, DOWN = 40;
+            const LEFT = 37, UP = 38, RIGHT = 39, DOWN = 40, R = 82;
         
-            // If game over, restart but keep handling this key for direction
-            if (!gameRunning && gameOverElement.style.visibility === 'visible') {
+            // R key ONLY restarts (when game over)
+            if (e.keyCode === R && !gameRunning && gameOverElement.style.visibility === 'visible') {
                 restart();
-                // don't return - same key also sets direction
+                return; // Don't process direction change after restart
             }
-        
-            if (e.keyCode === LEFT && dx !== 1) { dx = -1; dy = 0; }
-            if (e.keyCode === UP && dy !== 1) { dx = 0; dy = -1; }
-            if (e.keyCode === RIGHT && dx !== -1) { dx = 1; dy = 0; }
-            if (e.keyCode === DOWN && dy !== -1) { dx = 0; dy = 1; }
+            
+            // Arrow keys for direction (only when game is running OR after restart)
+            if (gameRunning) {
+                if (e.keyCode === LEFT && dx !== 1) { dx = -1; dy = 0; }
+                if (e.keyCode === UP && dy !== 1) { dx = 0; dy = -1; }
+                if (e.keyCode === RIGHT && dx !== -1) { dx = 1; dy = 0; }
+                if (e.keyCode === DOWN && dy !== -1) { dx = 0; dy = 1; }
+            }
         });
 
         // Game loop
