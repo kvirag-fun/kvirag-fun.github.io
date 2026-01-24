@@ -40,7 +40,7 @@
         Score: <span id="score">0</span> |
         High Score: <span id="highScore">0</span>
     </div>
-    <div class="version">v<span id="version">0.0.36</span></div>
+    <div class="version">v<span id="version">0.0.37</span></div>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
     <div class="controls">
         <div>Use ARROW KEYS to move</div>
@@ -111,11 +111,27 @@
             // Draw snake - darker head
             ctx.fillStyle = snake.length > 0 ? '#32A956' : '#ADDDBB';  // Darker green for head
             ctx.fillRect(snake[0].x * gridSize, snake[0].y * gridSize, gridSize - 2, gridSize - 2);
-            
-            ctx.fillStyle = '#ADDDBB';  // Normal green for body
+
+            // Normal green for body
+            ctx.fillStyle = '#ADDDBB';  
             for (let i = 1; i < snake.length; i++) {
                 ctx.fillRect(snake[i].x * gridSize, snake[i].y * gridSize, gridSize - 2, gridSize - 2);
             }
+
+            // Draw two red eyes on head
+            ctx.fillStyle = '#ff0000';  // Bright red eyes
+            const eyeSize = 4;
+            const eyeOffset = 4;
+            
+            // Left eye
+            ctx.fillRect(headX + eyeOffset, headY + eyeOffset, eyeSize, eyeSize);
+            // Right eye  
+            ctx.fillRect(headX + headSize - eyeOffset - eyeSize, headY + eyeOffset, eyeSize, eyeSize);
+            
+            // Optional: White highlight on eyes for shine effect
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+            ctx.fillRect(headX + eyeOffset + 1, headY + eyeOffset + 1, 2, 2);
+            ctx.fillRect(headX + headSize - eyeOffset - eyeSize + 1, headY + eyeOffset + 1, 2, 2);
 
             // Draw food
             ctx.fillStyle = '#ff4444';
