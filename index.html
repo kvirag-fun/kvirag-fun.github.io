@@ -36,7 +36,7 @@
 </head>
 <body>
     <div class="score">Score: <span id="score">0</span></div>
-    <div class="version">v<span id="version">0.0.18</span></div>
+    <div class="version">v<span id="version">0.0.19</span></div>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
     <div class="controls">
         <div>Use ARROW KEYS to move</div>
@@ -63,7 +63,7 @@
         let dy = 0;
         let score = 0;
         let gameRunning = true;
-        let gameSpeed = 150;
+        let gameSpeed = 50;
         let gameInterval;
 
         // Generate random food position, but check collision with snake
