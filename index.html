@@ -36,7 +36,7 @@
 </head>
 <body>
     <div class="score">Score: <span id="score">0</span></div>
-    <div class="version">v<span id="version">0.0.12</span></div>
+    <div class="version">v<span id="version">0.0.13</span></div>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
     <div class="controls">
         <div>Use ARROW KEYS to move</div>
@@ -63,6 +63,7 @@
         let dy = 0;
         let score = 0;
         let gameRunning = true;
+        let gameSpeed = 150;
 
         // Generate random food position
         function randomFood() {
@@ -118,6 +119,9 @@
             if (head.x === food.x && head.y === food.y) {
                 score += 10;
                 scoreElement.textContent = score;
+
+                if (score >= 100) gameSpeed = 100;
+                
                 randomFood();
             } else {
                 snake.pop();
@@ -167,7 +171,7 @@
 
         // Initialize and start
         randomFood();
-        setInterval(gameLoop, 150);
+        setInterval(gameLoop, gameSpeed);
     </script>
 </body>
 </html>
