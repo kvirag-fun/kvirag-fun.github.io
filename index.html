@@ -36,7 +36,10 @@
     </style>
 </head>
 <body>
-    <div class="score">Score: <span id="score">0</span></div>
+    <div class="score">
+        Score: <span id="score">0</span> |
+        High Score: <span id="highScore">0</span>
+    </div>
     <div class="version">v<span id="version">0.0.35</span></div>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
     <div class="controls">
@@ -67,6 +70,23 @@
         let gameSpeed = 150;
         let gameInterval;
 
+        // High score management
+        function getHighScore() {
+            return parseInt(localStorage.getItem('snakeHighScore')) || 0;
+        }
+
+        function setHighScore(score) {
+            const currentHigh = getHighScore();
+            if (score > currentHigh) {
+                localStorage.setItem('snakeHighScore', score);
+                document.getElementById('highScore').textContent = score;
+            }
+        }
+
+        function updateHighScoreDisplay() {
+            document.getElementById('highScore').textContent = getHighScore();
+        }
+        
         // Generate random food position, but check collision with snake
         function randomFood() {
             let validPosition = false;
@@ -132,6 +152,9 @@
                 score += 10;
                 scoreElement.textContent = score;
 
+                // Update high score
+                setHighScore(score);
+                
                 if (score >= 990) {gameSpeed = 50} 
                 else if (score >= 810) {gameSpeed = 65}
                 else if (score >= 630) {gameSpeed = 80}
@@ -162,6 +185,7 @@
             dy = 0;
             score = 0;
             scoreElement.textContent = score;
+            updateHighScoreDisplay();
             gameOverElement.style.visibility = 'hidden';
             gameRunning = true;
             
@@ -198,6 +222,7 @@
 
         // Initialize and start
         randomFood();
+        updateHighScoreDisplay();
         gameInterval = setInterval(gameLoop, gameSpeed);
     </script>
 </body>
