@@ -60,7 +60,7 @@
         </div>
     </div>
     
-    <div class="version">v<span id="version">0.1.3</span></div>
+    <div class="version">v<span id="version">0.1.4</span></div>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
     <div class="controls">
         <div>Use ARROW KEYS to move</div>
@@ -313,6 +313,36 @@
             if (e.keyCode === DOWN && dy !== -1) { dx = 0; dy = 1; }
         });
 
+        // Handle touch screen input
+        let touchStartX = 0;
+        let touchStartY = 0;
+
+        canvas.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+        });
+
+        canvas.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            const touchEndX = e.changedTouches[0].clientX;
+            const touchEndY = e.changedTouches[0].clientY;
+            
+            const deltaX = touchEndX - touchStartX;
+            const deltaY = touchEndY - touchStartY;
+            
+            const minSwipeDistance = 30;
+            
+            if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > minSwipeDistance) {
+                if (deltaX > 0 && dx !== -1) { dx = 1; dy = 0; }  // Right
+                else if (deltaX < 0 && dx !== 1) { dx = -1; dy = 0; }  // Left
+            }
+            else if (Math.abs(deltaY) > minSwipeDistance) {
+                if (deltaY > 0 && dy !== -1) { dx = 0; dy = 1; }  // Down
+                else if (deltaY < 0 && dy !== 1) { dx = 0; dy = -1; }  // Up
+            }
+        });
+        
         // Game loop
         function gameLoop() {
             update();
