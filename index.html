@@ -46,11 +46,11 @@
         Score: <span id="score">0</span> |
         High Score: <span id="highScore">0</span>
     </div>
-    <div class="version">v<span id="version">0.0.47</span></div>
+    <div class="version">v<span id="version">0.0.48</span></div>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
     <div class="controls">
         <div>Use ARROW KEYS to move</div>
-        <div id="gameOver" style="height: 30px; visibility: hidden; color:#Ff2800; font-size:20px;">
+        <div id="gameOver" style="height: 30px; visibility: hidden; color:#ff0000; font-size:20px;">
             Game Over! Press R to restart.
         </div>
     </div>
@@ -115,7 +115,7 @@
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
             // Draw food with stem
-            ctx.fillStyle = '#Ff2800';  // Red apple outline
+            ctx.fillStyle = '#ff0000';  // Red apple outline
             ctx.fillRect(food.x * gridSize + 2, food.y * gridSize + 4, gridSize - 4, gridSize - 6);
 
             ctx.fillStyle = '#B5514D';  // Red apple middle
