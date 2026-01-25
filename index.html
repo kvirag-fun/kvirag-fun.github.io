@@ -23,7 +23,6 @@
             touch-action: none;
             overscroll-behavior: none;
 
-            position: relative;
         }
         canvas {
             border: 3px solid #16213e;
@@ -54,19 +53,17 @@
         Score: <span id="score">0</span> | High Score: <span id="highScore">0</span>
     </div>
 
-    <!-- Leaderboard and canvas -->
-    <div style="position: relative; display: inline-block;">
-        <!-- Leaderboard -->
-        <div id="leaderboard" style="position: absolute; left: 8px; top: -5px; font-size: 14px; text-shadow: 0 0 5px #00ffff; line-height: 1.3em; width: 80px;">
-            Top 5:<br>
-            <div id="topScoresList" style="margin-top: 2px; font-size: 12px;">
-                1. 0<br>2. 0<br>3. 0<br>4. 0<br>5. 0
-            </div>
+
+    <!-- Leaderboard -->
+    <div class="leaderboard" style="font-size: 14px; margin: 10px 0 10px 0; text-shadow: 0 0 5px #00ffff; line-height: 1.3em; text-align: left; width: 100px;">
+        Top 5:<br>
+        <div id="topScoresList" style="margin-top: 2px; font-size: 12px;">
+            1. 0<br>2. 0<br>3. 0<br>4. 0<br>5. 0
         </div>
-        <!-- Game canvas -->
-        <canvas id="gameCanvas" width="400" height="400"></canvas>
     </div>
-    
+    <!-- Game canvas -->
+    <canvas id="gameCanvas" width="400" height="400"></canvas>
+        
     <div class="controls">
         <div>Use ARROW KEYS or SWIPE to move</div>
         <div id="gameOver" style="height: 30px; visibility: hidden; color:#ff0000; font-size:20px;">
