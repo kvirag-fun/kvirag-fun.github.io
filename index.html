@@ -68,7 +68,7 @@
     <div class="controls">
         <div>Use ARROW KEYS or SWIPE to move</div>
         <div id="gameOver" style="height: 30px; visibility: hidden; color:#ff0000; font-size:20px;">
-            Game Over! Press R to restart.
+            Game Over! Double-tap or press R to restart.
         </div>
     </div>
 
@@ -94,6 +94,10 @@
         let gameRunning = true;
         let gameSpeed = 150;
         let gameInterval;
+
+        //Double tap settings
+        let lastTap = 0;
+        const doubleTapDelay = 400;
 
         // High score management
         function getHighScore() {
@@ -330,12 +334,25 @@
 
         document.addEventListener('touchend', (e) => {
             e.preventDefault();
+
+            // Double-tap to restart
+            if (!gameRunning) {
+                const now = new Date().getTime();
+                const tapLength = now - lastTap;
+                
+                if (tapLength < doubleTapDelay && tapLength > 0) {
+                    restart();
+                    return;
+                }
+                lastTap = now;
+                return;
+            }
+
             const touchEndX = e.changedTouches[0].clientX;
             const touchEndY = e.changedTouches[0].clientY;
             
             const deltaX = touchEndX - touchStartX;
             const deltaY = touchEndY - touchStartY;
-            
             const minSwipeDistance = 20;
             
             if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > minSwipeDistance) {
@@ -346,7 +363,7 @@
                 if (deltaY > 0 && dy !== -1) { dx = 0; dy = 1; }  // Down
                 else if (deltaY < 0 && dy !== 1) { dx = 0; dy = -1; }  // Up
             }
-        });
+        }, { passive: false });
         
         // Game loop
         function gameLoop() {
