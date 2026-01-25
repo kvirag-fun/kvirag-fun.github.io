@@ -46,7 +46,7 @@
         Score: <span id="score">0</span> |
         High Score: <span id="highScore">0</span>
     </div>
-    <div class="version">v<span id="version">0.0.44</span></div>
+    <div class="version">v<span id="version">0.0.45</span></div>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
     <div class="controls">
         <div>Use ARROW KEYS to move</div>
@@ -115,8 +115,11 @@
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
             // Draw food with stem
-            ctx.fillStyle = '#B5514D';  // Red apple
-            ctx.fillRect(food.x * gridSize + 2, food.y * gridSize + 4, gridSize - 4, gridSize - 6);  // Apple body (smaller)
+            ctx.fillStyle = '##ff4444';  // Red apple outline
+            ctx.fillRect(food.x * gridSize + 2, food.y * gridSize + 4, gridSize - 4, gridSize - 6);
+
+            ctx.fillStyle = '#B5514D';  // Red apple middle
+            ctx.fillRect(food.x * gridSize + 2, food.y * gridSize + 4, gridSize - 5, gridSize - 7);
             
             ctx.fillStyle = '#2b1d0e';  // Dark brown stem
             ctx.fillRect(food.x * gridSize + 8, food.y * gridSize, 4, 4);  // Stem on top
