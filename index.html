@@ -35,17 +35,24 @@
         }
     </style>
 </head>
-<audio id="gameOverSound" preload="auto">
-    <source src="ugh.mp3" type="audio/mpeg">
-</audio>
-<audio id="foodEatingSound" preload="auto">
-    <source src="food.mp3" type="audio/mpeg">
-</audio>
 <body>
+    <audio id="gameOverSound" preload="auto">
+        <source src="ugh.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="foodEatingSound" preload="auto">
+        <source src="food.mp3" type="audio/mpeg">
+    </audio>
+    
     <div class="score">
-        Score: <span id="score">0</span> |
-        High Score: <span id="highScore">0</span>
+        Score: <span id="score">0</span> | High Score: <span id="highScore">0</span>
     </div>
+
+    <!-- Leaderboard -->
+    <div class="leaderboard" id="leaderboard" style="font-size: 16px; margin: 10px 0; text-shadow: 0 0 5px #00ffff;">
+        Top 5 Scores:<br>
+        <span id="topScores">-</span>
+    </div>
+    
     <div class="version">v<span id="version">0.0.48</span></div>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
     <div class="controls">
@@ -82,17 +89,48 @@
         }
 
         function setHighScore(score) {
-            const currentHigh = getHighScore();
-            if (score > currentHigh) {
-                localStorage.setItem('snakeHighScore', score);
-                document.getElementById('highScore').textContent = score;
-            }
+            updateLeaderboard(score);  // This now handles high score + leaderboard
         }
 
         function updateHighScoreDisplay() {
             document.getElementById('highScore').textContent = getHighScore();
         }
+
+        // Leaderboard management
+        function getLeaderboard() {
+            const scores = localStorage.getItem('snakeTopScores');
+            return scores ? JSON.parse(scores) : [];
+        }
         
+        function updateLeaderboard(newScore) {
+            let scores = getLeaderboard();
+            
+            // Add new score
+            scores.push(newScore);
+            
+            // Sort descending and keep top 5
+            scores.sort((a, b) => b - a);
+            scores = scores.slice(0, 5);
+            
+            // Save back to localStorage
+            localStorage.setItem('snakeTopScores', JSON.stringify(scores));
+            
+            // Update display
+            displayLeaderboard();
+        }
+        
+        function displayLeaderboard() {
+            const scores = getLeaderboard();
+            const topScoresElement = document.getElementById('topScores');
+            if (scores.length === 0) {
+                topScoresElement.textContent = 'No scores yet';
+            } else {
+                topScoresElement.innerHTML = scores.map((score, index) => 
+                    `<div>${index + 1}. ${score}</div>`
+                ).join('');
+            }
+        }
+
         // Generate random food position, but check collision with snake
         function randomFood() {
             let validPosition = false;
@@ -233,7 +271,7 @@
             gameOverElement.style.visibility = 'hidden';
             gameRunning = true;
             
-            // Resest game spee&d to default
+            // Resest game speed to default
             gameSpeed = 150
             clearInterval(gameInterval);  // Stop old speed
             gameInterval = setInterval(gameLoop, gameSpeed);  // Start new speed
@@ -267,6 +305,7 @@
         // Initialize and start
         randomFood();
         updateHighScoreDisplay();
+        displayLeaderboard();
         gameInterval = setInterval(gameLoop, gameSpeed);
     </script>
 </body>
