@@ -53,7 +53,7 @@
         <span id="topScores">-</span>
     </div>
     
-    <div class="version">v<span id="version">0.1.0</span></div>
+    <div class="version">v<span id="version">0.1.1</span></div>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
     <div class="controls">
         <div>Use ARROW KEYS to move</div>
@@ -126,13 +126,16 @@
         function displayLeaderboard() {
             const scores = getLeaderboard();
             const topScoresElement = document.getElementById('topScores');
-            if (scores.length === 0) {
-                topScoresElement.textContent = 'No scores yet';
-            } else {
-                topScoresElement.innerHTML = scores.map((score, index) => 
-                    `<div>${index + 1}. ${score}</div>`
-                ).join('');
+            
+            // Always show exactly 5 rows, fill with 0 if needed
+            const displayScores = [...scores];
+            while (displayScores.length < 5) {
+                displayScores.push(0);
             }
+
+            topScoresElement.innerHTML = scores.map((score, index) => 
+                `<div>${index + 1}. ${score}</div>`
+            ).join('');
         }
 
         // Generate random food position, but check collision with snake
