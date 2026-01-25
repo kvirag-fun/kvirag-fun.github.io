@@ -60,7 +60,7 @@
         </div>
     </div>
     
-    <div class="version">v<span id="version">0.1.4</span></div>
+    <div class="version">v<span id="version">0.1.5</span></div>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
     <div class="controls">
         <div>Use ARROW KEYS to move</div>
@@ -317,13 +317,13 @@
         let touchStartX = 0;
         let touchStartY = 0;
 
-        canvas.addEventListener('touchstart', (e) => {
+        document.addEventListener('touchstart', (e) => {
             e.preventDefault();
             touchStartX = e.touches[0].clientX;
             touchStartY = e.touches[0].clientY;
         });
 
-        canvas.addEventListener('touchend', (e) => {
+        document.addEventListener('touchend', (e) => {
             e.preventDefault();
             const touchEndX = e.changedTouches[0].clientX;
             const touchEndY = e.changedTouches[0].clientY;
@@ -331,7 +331,7 @@
             const deltaX = touchEndX - touchStartX;
             const deltaY = touchEndY - touchStartY;
             
-            const minSwipeDistance = 30;
+            const minSwipeDistance = 20;
             
             if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > minSwipeDistance) {
                 if (deltaX > 0 && dx !== -1) { dx = 1; dy = 0; }  // Right
