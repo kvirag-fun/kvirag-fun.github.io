@@ -16,8 +16,12 @@
             background: #1a1a2e;
             font-family: Arial, sans-serif;
             color: white;
+            
+            /* Disable touch controls */
             overflow: hidden;
-            height: 100%;
+            height: 100vh;
+            touch-action: none;
+            overscroll-behavior: none;
         }
         canvas {
             border: 3px solid #16213e;
@@ -56,7 +60,7 @@
         </div>
     </div>
     
-    <div class="version">v<span id="version">0.1.2</span></div>
+    <div class="version">v<span id="version">0.1.3</span></div>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
     <div class="controls">
         <div>Use ARROW KEYS to move</div>
