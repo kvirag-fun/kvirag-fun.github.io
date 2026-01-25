@@ -22,6 +22,8 @@
             height: 100vh;
             touch-action: none;
             overscroll-behavior: none;
+
+            position: relative;
         }
         canvas {
             border: 3px solid #16213e;
@@ -53,9 +55,9 @@
     </div>
 
     <!-- Leaderboard -->
-    <div class="leaderboard" id="leaderboard" style="font-size: 16px; margin: 10px 0; text-shadow: 0 0 5px #00ffff; line-height: 1.4em;">
-        Top 5 Scores:<br>
-        <div id="topScoresList" style="margin-top: 5px;">
+    <div class="leaderboard" style="position: absolute; left: 20px; top: 20px; font-size: 14px; text-shadow: 0 0 5px #00ffff; line-height: 1.3em; z-index: 10;">
+        Top 5:<br>
+        <div id="topScoresList" style="margin-top: 2px;">
             1. 0<br>2. 0<br>3. 0<br>4. 0<br>5. 0
         </div>
     </div>
