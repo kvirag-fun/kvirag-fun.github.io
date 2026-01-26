@@ -53,18 +53,20 @@
         Score: <span id="score">0</span> | High Score: <span id="highScore">0</span>
     </div>
 
-
-    <!-- Leaderboard -->
-    <div class="leaderboard" style="font-size: 14px; margin: 10px 0 10px 0; text-shadow: 0 0 5px #00ffff; line-height: 1.3em; text-align: left; width: 400px;">
-        Leaderboard:<br>
-        <div id="topScoresList" style="margin-top: 2px; font-size: 12px;">
-            1. 0<br>2. 0<br>3. 0<br>4. 0<br>5. 0
+    <!-- Flexbox side-by-side -->
+    <div class="flex-container" style="width: 100%; max-width: 450px; margin: 10px 0; display: flex; gap: 30px; align-items: flex-start">
+        <!-- Leaderboard -->
+        <div class="leaderboard" style="font-size: 14px; margin: 10px 0 10px 0; text-shadow: 0 0 5px #00ffff; line-height: 1.3em; text-align: left; width: 400px;">
+            Leaderboard:<br>
+            <div id="topScoresList" style="margin-top: 2px; font-size: 12px;">
+                1. 0<br>2. 0<br>3. 0<br>4. 0<br>5. 0
+            </div>
         </div>
-    </div>
-
-    <!-- Settings -->
-    <div class="settings" style="font-size: 14px; margin: 10px 0 10px 0; text-shadow: 0 0 5px #00ffff; line-height: 1.3em; text-align: left; width: 400px;">
-        Settings:<br>
+    
+        <!-- Settings -->
+        <div class="settings" style="font-size: 14px; margin: 10px 0 10px 0; text-shadow: 0 0 5px #00ffff; line-height: 1.3em; text-align: left; width: 400px;">
+            Settings:<br>
+        </div>
     </div>
     
     <!-- Game canvas -->
