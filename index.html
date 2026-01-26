@@ -43,7 +43,7 @@
 </head>
 <body>
     <audio id="gameOverSound" preload="auto">
-        <source src="ugh.mp3" type="audio/mpeg">
+        <source src="ugh_05s.mp3" type="audio/mpeg">
     </audio>
     <audio id="foodEatingSound" preload="auto">
         <source src="food.mp3" type="audio/mpeg">
@@ -53,31 +53,43 @@
         Score: <span id="score">0</span> | High Score: <span id="highScore">0</span>
     </div>
 
-
-    <!-- Leaderboard -->
-    <div class="leaderboard" style="font-size: 14px; margin: 10px 0 10px 0; text-shadow: 0 0 5px #00ffff; line-height: 1.3em; text-align: left; width: 100px;">
-        Top 5:<br>
-        <div id="topScoresList" style="margin-top: 2px; font-size: 12px;">
-            1. 0<br>2. 0<br>3. 0<br>4. 0<br>5. 0
+    <!-- Flexbox side-by-side -->
+    <div class="flex-container" style="width: 100%; max-width: 400px; margin: 10px 0; display: flex; gap: 30px; align-items: flex-start">
+        <!-- Leaderboard -->
+        <div class="leaderboard" style="font-size: 14px; margin: 10px 0 10px 0; text-shadow: 0 0 5px #00ffff; line-height: 1.3em; text-align: left; width: 200px;">
+            Leaderboard:<br>
+            <div id="topScoresList" style="margin-top: 2px; font-size: 12px;">
+                1. 0<br>2. 0<br>3. 0<br>4. 0<br>5. 0
+            </div>
+        </div>
+    
+        <!-- Settings -->
+        <div class="settings" style="font-size: 14px; margin: 10px 0 10px 0; text-shadow: 0 0 5px #00ffff; line-height: 1.3em; text-align: left; width: 200px;">
+            Settings:<br>
+            <label style="font-size: 12px;">
+                <input type="checkbox" id="soundToggle" style="cursor: pointer;"> Sound on
+            </label>
         </div>
     </div>
+    
     <!-- Game canvas -->
     <canvas id="gameCanvas" width="400" height="400"></canvas>
         
     <div class="controls">
         <div>Use ARROW KEYS or SWIPE to move</div>
         <div id="gameOver" style="height: 30px; visibility: hidden; color:#ff0000; font-size:20px;">
-            Game Over! Press R to restart.
+            Game Over! Double-tap or press R to restart.
         </div>
     </div>
 
-    <div class="version">v<span id="version">0.1.5</span></div>
+    <div class="version">v<span id="version">0.1.13</span></div>
     
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
         const scoreElement = document.getElementById('score');
         const gameOverElement = document.getElementById('gameOver');
+        const soundToggle = document.getElementById('soundToggle');
 
         // Game settings
         const gridSize = 20;
@@ -93,6 +105,10 @@
         let gameRunning = true;
         let gameSpeed = 150;
         let gameInterval;
+
+        //Double tap settings
+        let lastTap = 0;
+        const doubleTapDelay = 400;
 
         // High score management
         function getHighScore() {
@@ -240,9 +256,13 @@
 
             // Check food collision
             if (head.x === food.x && head.y === food.y) {
-                const gameOverSound = document.getElementById('foodEatingSound');
-                gameOverSound.currentTime = 0;  // Reset to start
-                gameOverSound.play().catch(e => console.log('Sound play failed:', e));
+
+                // Play sound
+                if (soundToggle.checked) {
+                    const gameOverSound = document.getElementById('foodEatingSound');
+                    gameOverSound.currentTime = 0;  // Reset to start
+                    gameOverSound.play().catch(e => console.log('Sound play failed:', e));
+                }
                 
                 score += 10;
                 scoreElement.textContent = score;
@@ -274,11 +294,13 @@
 
             // ADD: Update leaderboard with FINAL score only
             updateLeaderboard(score);
-            
+
             // Play sound
-            const gameOverSound = document.getElementById('gameOverSound');
-            gameOverSound.currentTime = 0;  // Reset to start
-            gameOverSound.play().catch(e => console.log('Sound play failed:', e));
+            if (soundToggle.checked) {
+                const gameOverSound = document.getElementById('gameOverSound');
+                gameOverSound.currentTime = 0;  // Reset to start
+                gameOverSound.play().catch(e => console.log('Sound play failed:', e));
+            }
         }
 
         // Restart game
@@ -329,12 +351,25 @@
 
         document.addEventListener('touchend', (e) => {
             e.preventDefault();
+
+            // Double-tap to restart
+            if (!gameRunning) {
+                const now = new Date().getTime();
+                const tapLength = now - lastTap;
+                
+                if (tapLength < doubleTapDelay && tapLength > 0) {
+                    restart();
+                    return;
+                }
+                lastTap = now;
+                return;
+            }
+
             const touchEndX = e.changedTouches[0].clientX;
             const touchEndY = e.changedTouches[0].clientY;
             
             const deltaX = touchEndX - touchStartX;
             const deltaY = touchEndY - touchStartY;
-            
             const minSwipeDistance = 20;
             
             if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > minSwipeDistance) {
@@ -345,7 +380,7 @@
                 if (deltaY > 0 && dy !== -1) { dx = 0; dy = 1; }  // Down
                 else if (deltaY < 0 && dy !== 1) { dx = 0; dy = -1; }  // Up
             }
-        });
+        }, { passive: false });
         
         // Game loop
         function gameLoop() {
