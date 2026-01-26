@@ -262,8 +262,6 @@
                     const gameOverSound = document.getElementById('foodEatingSound');
                     gameOverSound.currentTime = 0;  // Reset to start
                     gameOverSound.play().catch(e => console.log('Sound play failed:', e));
-                } else {
-                    return;
                 }
                 
                 score += 10;
@@ -302,8 +300,6 @@
                 const gameOverSound = document.getElementById('gameOverSound');
                 gameOverSound.currentTime = 0;  // Reset to start
                 gameOverSound.play().catch(e => console.log('Sound play failed:', e));
-            } else {
-                return;
             }
         }
 
