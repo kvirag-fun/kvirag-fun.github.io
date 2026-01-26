@@ -82,7 +82,7 @@
         </div>
     </div>
 
-    <div class="version">v<span id="version">0.1.12</span></div>
+    <div class="version">v<span id="version">0.1.13</span></div>
     
     <script>
         const canvas = document.getElementById('gameCanvas');
@@ -256,9 +256,15 @@
 
             // Check food collision
             if (head.x === food.x && head.y === food.y) {
-                const gameOverSound = document.getElementById('foodEatingSound');
-                gameOverSound.currentTime = 0;  // Reset to start
-                gameOverSound.play().catch(e => console.log('Sound play failed:', e));
+
+                // Play sound
+                if (soundToggle.checked) {
+                    const gameOverSound = document.getElementById('foodEatingSound');
+                    gameOverSound.currentTime = 0;  // Reset to start
+                    gameOverSound.play().catch(e => console.log('Sound play failed:', e));
+                } else {
+                    return;
+                }
                 
                 score += 10;
                 scoreElement.textContent = score;
