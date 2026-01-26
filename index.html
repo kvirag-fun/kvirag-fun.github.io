@@ -66,8 +66,8 @@
         <!-- Settings -->
         <div class="settings" style="font-size: 14px; margin: 10px 0 10px 0; text-shadow: 0 0 5px #00ffff; line-height: 1.3em; text-align: left; width: 200px;">
             Settings:<br>
-            <label style="font-size: 12px; cursor: pointer;">
-                <input type="checkbox" id="soundToggle" style="cursor: pointer;"> Sound On
+            <label style="font-size: 12px;">
+                <input type="checkbox" id="soundToggle" style="cursor: pointer;"> Sound on
             </label>
         </div>
     </div>
@@ -82,13 +82,14 @@
         </div>
     </div>
 
-    <div class="version">v<span id="version">0.1.11</span></div>
+    <div class="version">v<span id="version">0.1.12</span></div>
     
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
         const scoreElement = document.getElementById('score');
         const gameOverElement = document.getElementById('gameOver');
+        const soundToggle = document.getElementById('soundToggle');
 
         // Game settings
         const gridSize = 20;
@@ -289,11 +290,15 @@
 
             // ADD: Update leaderboard with FINAL score only
             updateLeaderboard(score);
-            
+
             // Play sound
-            const gameOverSound = document.getElementById('gameOverSound');
-            gameOverSound.currentTime = 0;  // Reset to start
-            gameOverSound.play().catch(e => console.log('Sound play failed:', e));
+            if (soundToggle.checked) {
+                const gameOverSound = document.getElementById('gameOverSound');
+                gameOverSound.currentTime = 0;  // Reset to start
+                gameOverSound.play().catch(e => console.log('Sound play failed:', e));
+            } else {
+                return;
+            }
         }
 
         // Restart game
