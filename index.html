@@ -82,7 +82,7 @@
         </div>
     </div>
 
-    <div class="version">v<span id="version">0.1.15</span></div>
+    <div class="version">v<span id="version">0.1.14</span></div>
     
     <script>
         const canvas = document.getElementById('gameCanvas');
@@ -240,15 +240,13 @@
             // Don't move if no direction set
             if (dx === 0 && dy === 0) return;
 
-             // Use CURRENT direction
-            const head = {x: snake[0].x + dx, y: snake[0].y + dy};
+             // Use queued direction (prevents instant death)
+            const head = {x: snake[0].x + nextDirection.dx, y: snake[0].y + nextDirection.dy};
 
             // Process next input from queue
             if (inputQueue.length > 0) {
-                const queuedDir = inputQueue.shift();
-                dx = queuedDir.dx;  // Update current direction
-                dy = queuedDir.dy;
-            }  
+                nextDirection = inputQueue.shift();  // Take from front
+            }    
             
             // Check wall collision
             if (head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount) {
