@@ -82,7 +82,7 @@
         </div>
     </div>
 
-    <div class="version">v<span id="version">0.1.14</span></div>
+    <div class="version">v<span id="version">0.1.13</span></div>
     
     <script>
         const canvas = document.getElementById('gameCanvas');
@@ -110,10 +110,6 @@
         let lastTap = 0;
         const doubleTapDelay = 400;
 
-        // Queue next move
-        let inputQueue = [];  // Queue of pending directions
-        let nextDirection = {dx: 0, dy: 0};  // Direction for next tick
-        
         // High score management
         function getHighScore() {
             return parseInt(localStorage.getItem('snakeHighScore')) || 0;
@@ -239,15 +235,9 @@
 
             // Don't move if no direction set
             if (dx === 0 && dy === 0) return;
-
-             // Use queued direction (prevents instant death)
-            const head = {x: snake[0].x + nextDirection.dx, y: snake[0].y + nextDirection.dy};
-
-            // Process next input from queue
-            if (inputQueue.length > 0) {
-                nextDirection = inputQueue.shift();  // Take from front
-            }    
             
+            const head = {x: snake[0].x + dx, y: snake[0].y + dy};
+
             // Check wall collision
             if (head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount) {
                 gameOver();
@@ -316,9 +306,8 @@
         // Restart game
         function restart() {
             snake = [{x: 10, y: 10}];
-            dx = 0; dy = 0;
-            nextDirection = {dx: 0, dy: 0};  // ADD
-            inputQueue = [];                  
+            dx = 0;
+            dy = 0;
             score = 0;
             scoreElement.textContent = score;
             updateHighScoreDisplay();
@@ -337,22 +326,17 @@
         document.addEventListener('keydown', (e) => {
             const LEFT = 37, UP = 38, RIGHT = 39, DOWN = 40, R = 82;
         
-            // R key only restarts when game over
+            // R key ONLY restarts (when game over)
             if (e.keyCode === R && !gameRunning && gameOverElement.style.visibility === 'visible') {
                 restart();
                 return; // Don't process direction change after restart
             }
             
-            // Arrow keys always work (opposite direction blocked)
-            if (e.keyCode === LEFT && dx !== 1) { newDx = -1; newDy = 0; }
-            if (e.keyCode === UP && dy !== 1) { newDx = 0; newDy = -1; }
-            if (e.keyCode === RIGHT && dx !== -1) { newDx = 1; newDy = 0; }
-            if (e.keyCode === DOWN && dy !== -1) { newDx = 0; newDy = 1; }
-
-            // Only queue if direction changed
-            if (newDx !== dx || newDy !== dy) {
-                inputQueue.push({dx: newDx, dy: newDy});
-            }
+            // Arrow keys ALWAYS work (removed gameRunning check)
+            if (e.keyCode === LEFT && dx !== 1) { dx = -1; dy = 0; }
+            if (e.keyCode === UP && dy !== 1) { dx = 0; dy = -1; }
+            if (e.keyCode === RIGHT && dx !== -1) { dx = 1; dy = 0; }
+            if (e.keyCode === DOWN && dy !== -1) { dx = 0; dy = 1; }
         });
 
         // Handle touch screen input
@@ -383,20 +367,18 @@
 
             const touchEndX = e.changedTouches[0].clientX;
             const touchEndY = e.changedTouches[0].clientY;
+            
             const deltaX = touchEndX - touchStartX;
             const deltaY = touchEndY - touchStartY;
             const minSwipeDistance = 20;
-
-            let newDx = dx, newDy = dy;
-            if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > minSwipeDistance) {
-                newDx = deltaX > 0 ? 1 : -1; newDy = 0;
-            } else if (Math.abs(deltaY) > minSwipeDistance) {
-                newDx = 0; newDy = deltaY > 0 ? 1 : -1;
-            }
             
-            // Queue if valid direction change
-            if ((newDx !== dx || newDy !== dy) && (newDx !== 0 || newDy !== 0)) {
-                inputQueue.push({dx: newDx, dy: newDy});
+            if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > minSwipeDistance) {
+                if (deltaX > 0 && dx !== -1) { dx = 1; dy = 0; }  // Right
+                else if (deltaX < 0 && dx !== 1) { dx = -1; dy = 0; }  // Left
+            }
+            else if (Math.abs(deltaY) > minSwipeDistance) {
+                if (deltaY > 0 && dy !== -1) { dx = 0; dy = 1; }  // Down
+                else if (deltaY < 0 && dy !== 1) { dx = 0; dy = -1; }  // Up
             }
         }, { passive: false });
         
