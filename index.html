@@ -82,7 +82,7 @@
         </div>
     </div>
 
-    <div class="version">v<span id="version">0.1.31</span></div>
+    <div class="version">v<span id="version">0.1.32</span></div>
     
     <script>
         const canvas = document.getElementById('gameCanvas');
@@ -108,7 +108,6 @@
 
         // Input queue settings
         let inputQueue = []
-        let firstInputMade = false
         
         //Double tap settings
         let lastTap = 0;
@@ -236,6 +235,7 @@
         // Update game state
         function update() {
             if (!gameRunning) return;
+            console.log('Update at:', Date.now());
 
             if (inputQueue.length > 0) {
                 const queuedDirection = inputQueue.shift();
@@ -246,18 +246,7 @@
             // Don't move if no direction set
             if (dx === 0 && dy === 0) return;
 
-            /*
-            // Take queued direction into account
-            if (!firstInputMade && inputQueue.length === 1) {
-                const queuedDirection = inputQueue.shift();
-                dx = queuedDirection.dx;
-                dy = queuedDirection.dy;
-                inputQueue = [];
-            }
-            */
-
             const head = {x: snake[0].x + dx, y: snake[0].y + dy};
-            firstInputMade = false;
             
             // Check wall collision
             if (head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount) {
@@ -306,8 +295,6 @@
             } else {
                 snake.pop();
             }
-
-            
         }
 
         // Game over
@@ -346,7 +333,6 @@
 
             // Reset the input queue
             inputQueue = [];
-            firstInputMade = false;
         }
 
         // Handle keyboard input
@@ -366,27 +352,6 @@
                 if (e.keyCode === RIGHT && dx !== -1) { inputQueue.push({dx: 1, dy: 0}); console.log("RIGHT"); }
                 if (e.keyCode === DOWN && dy !== -1) { inputQueue.push({dx: 0, dy: 1}); console.log("DOWN"); }
             }
-            
-        /*
-            // Arrow keys ALWAYS work
-            if (gameRunning) {
-                if (!firstInputMade && inputQueue.length !== 1) {
-                    if (e.keyCode === LEFT && dx !== 1) { dx = -1; dy = 0; }
-                    if (e.keyCode === UP && dy !== 1) { dx = 0; dy = -1; }
-                    if (e.keyCode === RIGHT && dx !== -1) { dx = 1; dy = 0; }
-                    if (e.keyCode === DOWN && dy !== -1) { dx = 0; dy = 1; }
-                    firstInputMade = true;
-                    console.log("First key press");
-                } 
-                if (firstInputMade && inputQueue.length === 0) {
-                    if (e.keyCode === LEFT && dx !== 1) { inputQueue.push({ dx: -1, dy: 0}); }
-                    if (e.keyCode === UP && dy !== 1) { inputQueue.push({dx: 0, dy: -1}); }
-                    if (e.keyCode === RIGHT && dx !== -1) { inputQueue.push({dx: 1, dy: 0}); }
-                    if (e.keyCode === DOWN && dy !== -1) { inputQueue.push({dx: 0, dy: 1}); }
-                    console.log(e.keyCode);
-                }
-            }
-        */
         });
 
         // Handle touch screen input
