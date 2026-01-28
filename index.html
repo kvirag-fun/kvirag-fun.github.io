@@ -82,7 +82,7 @@
         </div>
     </div>
 
-    <div class="version">v<span id="version">0.1.17</span></div>
+    <div class="version">v<span id="version">0.1.18</span></div>
     
     <script>
         const canvas = document.getElementById('gameCanvas');
@@ -349,7 +349,7 @@
             
             // Arrow keys ALWAYS work
             if (gameRunning) {
-                if (!firstInputMade) {
+                if (firstInputMade) {
                     if (e.keyCode === LEFT && dx !== 1) { dx = -1; dy = 0; }
                     if (e.keyCode === UP && dy !== 1) { dx = 0; dy = -1; }
                     if (e.keyCode === RIGHT && dx !== -1) { dx = 1; dy = 0; }
