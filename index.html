@@ -82,7 +82,7 @@
         </div>
     </div>
 
-    <div class="version">v<span id="version">0.1.26</span></div>
+    <div class="version">v<span id="version">0.1.27</span></div>
     
     <script>
         const canvas = document.getElementById('gameCanvas');
@@ -359,13 +359,14 @@
                     if (e.keyCode === RIGHT && dx !== -1) { dx = 1; dy = 0; }
                     if (e.keyCode === DOWN && dy !== -1) { dx = 0; dy = 1; }
                     firstInputMade = true;
+                    console.log("First key press");
                 } 
                 if (firstInputMade && inputQueue.length === 0) {
                     if (e.keyCode === LEFT && dx !== 1) { inputQueue.push({ dx: -1, dy: 0}); }
                     if (e.keyCode === UP && dy !== 1) { inputQueue.push({dx: 0, dy: -1}); }
                     if (e.keyCode === RIGHT && dx !== -1) { inputQueue.push({dx: 1, dy: 0}); }
                     if (e.keyCode === DOWN && dy !== -1) { inputQueue.push({dx: 0, dy: 1}); }
-                    console.log(e.keyCode)
+                    console.log(e.keyCode);
                 }
             }
         });
