@@ -82,7 +82,7 @@
         </div>
     </div>
 
-    <div class="version">v<span id="version">0.1.19</span></div>
+    <div class="version">v<span id="version">0.1.20</span></div>
     
     <script>
         const canvas = document.getElementById('gameCanvas');
@@ -240,17 +240,20 @@
             // Don't move if no direction set
             if (dx === 0 && dy === 0) return;
 
-            if (firstInputMade) {
-                const head = {x: snake[0].x + dx, y: snake[0].y + dy};
-            } else {
+            /*
+            // Take queued direction into account
+            if (firstInputMade && inputQueue.length === 1) {
                 const queuedDirection = inputQueue.shift();
-                dx = direction.dx;
-                dy = direction.dy;
-                const head = {x: snake[0].x + dx, y: snake[0].y + dy};
+                dx = queuedDirection.dx;
+                dy = queuedDirection.dy;
                 inputQueue = [];
-                firstInputMade = false;
             }
-
+                
+                firstInputMade = false;
+            */
+        
+            const head = {x: snake[0].x + dx, y: snake[0].y + dy};
+            
             // Check wall collision
             if (head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount) {
                 gameOver();
@@ -298,6 +301,8 @@
             } else {
                 snake.pop();
             }
+
+            
         }
 
         // Game over
