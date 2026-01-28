@@ -82,7 +82,7 @@
         </div>
     </div>
 
-    <div class="version">v<span id="version">0.1.18</span></div>
+    <div class="version">v<span id="version">0.1.19</span></div>
     
     <script>
         const canvas = document.getElementById('gameCanvas');
@@ -244,7 +244,9 @@
                 const head = {x: snake[0].x + dx, y: snake[0].y + dy};
             } else {
                 const queuedDirection = inputQueue.shift();
-                const head = {x: snake[0].x + queuedDirection.dx, y: snake[0].y + queuedDirection.dy};
+                dx = direction.dx;
+                dy = direction.dy;
+                const head = {x: snake[0].x + dx, y: snake[0].y + dy};
                 inputQueue = [];
                 firstInputMade = false;
             }
@@ -349,7 +351,7 @@
             
             // Arrow keys ALWAYS work
             if (gameRunning) {
-                if (firstInputMade) {
+                if (!firstInputMade) {
                     if (e.keyCode === LEFT && dx !== 1) { dx = -1; dy = 0; }
                     if (e.keyCode === UP && dy !== 1) { dx = 0; dy = -1; }
                     if (e.keyCode === RIGHT && dx !== -1) { dx = 1; dy = 0; }
