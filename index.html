@@ -82,7 +82,7 @@
         </div>
     </div>
 
-    <div class="version">v<span id="version">0.1.29</span></div>
+    <div class="version">v<span id="version">0.1.30</span></div>
     
     <script>
         const canvas = document.getElementById('gameCanvas');
@@ -241,13 +241,12 @@
                 const queuedDirection = inputQueue.shift();
                 dx = queuedDirection.dx;
                 dy = queuedDirection.dy;
-            } else return;
+            }
 
-            /*
             // Don't move if no direction set
             if (dx === 0 && dy === 0) return;
 
-            
+            /*
             // Take queued direction into account
             if (!firstInputMade && inputQueue.length === 1) {
                 const queuedDirection = inputQueue.shift();
