@@ -82,7 +82,7 @@
         </div>
     </div>
 
-    <div class="version">v<span id="version">0.1.32</span></div>
+    <div class="version">v<span id="version">0.1.33</span></div>
     
     <script>
         const canvas = document.getElementById('gameCanvas');
@@ -113,6 +113,8 @@
         let lastTap = 0;
         const doubleTapDelay = 400;
 
+        let lastUpdateTime = 0
+        
         // High score management
         function getHighScore() {
             return parseInt(localStorage.getItem('snakeHighScore')) || 0;
@@ -280,16 +282,13 @@
                 // Update high score
                 setHighScore(score);
                 
-                if (score >= 990) {gameSpeed = 50} 
-                else if (score >= 810) {gameSpeed = 65}
-                else if (score >= 630) {gameSpeed = 80}
-                else if (score >= 450) {gameSpeed = 95}
-                else if (score >= 270) {gameSpeed = 110}
-                else if (score >= 180) {gameSpeed = 125}
-                else if (score >= 90) {gameSpeed = 135}
-                
-                clearInterval(gameInterval);  // Stop old speed
-                gameInterval = setInterval(gameLoop, gameSpeed);  // Start new speed
+                if (score >= 990) gameSpeed = 50;
+                else if (score >= 810) gameSpeed = 65;
+                else if (score >= 630) gameSpeed = 80;
+                else if (score >= 450) gameSpeed = 95;
+                else if (score >= 270) gameSpeed = 110;
+                else if (score >= 180) gameSpeed = 125;
+                else if (score >= 90) gameSpeed = 135;
                 
                 randomFood();
             } else {
@@ -326,8 +325,7 @@
             
             // Resest game speed to default
             gameSpeed = 150
-            clearInterval(gameInterval);  // Stop old speed
-            gameInterval = setInterval(gameLoop, gameSpeed);  // Start new speed
+            lastUpdateTime = 0
             
             randomFood();
 
@@ -398,16 +396,22 @@
         }, { passive: false });
         
         // Game loop
-        function gameLoop() {
-            update();
-            drawGame();
+        function gameLoop(time) {
+            // Only update game logic when enough time passed
+            if (time - lastUpdateTime >= gameSpeed) {
+                update();
+                lastUpdateTime = time;  // Reset timer
+            }
+            
+            drawGame(); // Always draw smoothly
+            requestAnimationFrame(gameLoop);
         }
 
         // Initialize and start
         randomFood();
         updateHighScoreDisplay();
         displayLeaderboard();
-        gameInterval = setInterval(gameLoop, gameSpeed);
+        requestAnimationFrame(gameLoop);
     </script>
 </body>
 </html>
