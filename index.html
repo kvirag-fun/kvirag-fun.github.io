@@ -82,7 +82,7 @@
         </div>
     </div>
 
-    <div class="version">v<span id="version">0.1.16</span></div>
+    <div class="version">v<span id="version">0.1.17</span></div>
     
     <script>
         const canvas = document.getElementById('gameCanvas');
@@ -106,7 +106,7 @@
         let gameSpeed = 150;
         let gameInterval;
 
-        // Input queue
+        // Input queue settings
         let inputQueue = []
         let firstInputMade = false
         
@@ -245,8 +245,8 @@
             } else {
                 const queuedDirection = inputQueue.shift();
                 const head = {x: snake[0].x + queuedDirection.dx, y: snake[0].y + queuedDirection.dy};
-                inputQueue = []
-                firstInputMade = false
+                inputQueue = [];
+                firstInputMade = false;
             }
 
             // Check wall collision
@@ -357,10 +357,10 @@
                     firstInputMade = true;
                 } 
                 if (firstInputMade && inputQueue.length === 0) {
-                    if (e.keyCode === LEFT && dx !== 1) { inputQueue.push({ dx = -1; dy = 0}); }
-                    if (e.keyCode === UP && dy !== 1) { inputQueue.push({dx = 0; dy = -1}); }
-                    if (e.keyCode === RIGHT && dx !== -1) { inputQueue.push({dx = 1; dy = 0}); }
-                    if (e.keyCode === DOWN && dy !== -1) { inputQueue.push({dx = 0; dy = 1}); }
+                    if (e.keyCode === LEFT && dx !== 1) { inputQueue.push({ dx: -1, dy: 0}); }
+                    if (e.keyCode === UP && dy !== 1) { inputQueue.push({dx: 0, dy: -1}); }
+                    if (e.keyCode === RIGHT && dx !== -1) { inputQueue.push({dx: 1, dy: 0}); }
+                    if (e.keyCode === DOWN && dy !== -1) { inputQueue.push({dx: 0, dy: 1}); }
                 }
             }
         });
