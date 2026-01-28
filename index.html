@@ -50,7 +50,9 @@
     </audio>
     
     <div class="score">
-        Score: <span id="score">0</span> | High Score: <span id="highScore">0</span>
+        Score: <span id="score">0</span> | 
+        Level: <span id="level">1</span> | 
+        High Score: <span id="highScore">0</span>
     </div>
 
     <!-- Flexbox side-by-side -->
@@ -82,12 +84,13 @@
         </div>
     </div>
 
-    <div class="version">v<span id="version">0.1.35</span></div>
+    <div class="version">v<span id="version">0.1.36</span></div>
     
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
         const scoreElement = document.getElementById('score');
+        const levelElement = document.getElementById('level');
         const gameOverElement = document.getElementById('gameOver');
         const soundToggle = document.getElementById('soundToggle');
 
@@ -170,6 +173,17 @@
             ).join('<br>');
         }        
 
+        function updateLevelDisplay(score) {
+            let level;
+            if (score < 100) level = 1;
+            else if (score < 300) level = 2;
+            else if (score < 600) level = 3;
+            else if (score < 900) level = 4;
+            else level = 5;
+            
+            levelElement.textContent = level;
+        }
+
         // Generate random food position, but check collision with snake
         function randomFood() {
             let validPosition = false;
@@ -231,7 +245,6 @@
             ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
             ctx.fillRect(headX + eyeOffset + 1, headY + eyeOffset + 1, 2, 2);
             ctx.fillRect(headX + headSize - eyeOffset - eyeSize + 1, headY + eyeOffset + 1, 2, 2);
-
         }
 
         // Update game state
@@ -277,6 +290,7 @@
                 
                 score += 10;
                 scoreElement.textContent = score;
+                updateLevelDisplay(score); 
 
                 // Update high score
                 setHighScore(score);
@@ -330,6 +344,7 @@
             dy = 0;
             score = 0;
             scoreElement.textContent = score;
+            updateLevelDisplay(score); 
             updateHighScoreDisplay();
             gameOverElement.style.visibility = 'hidden';
             gameRunning = true;
