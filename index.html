@@ -82,7 +82,7 @@
         </div>
     </div>
 
-    <div class="version">v<span id="version">0.1.33</span></div>
+    <div class="version">v<span id="version">0.1.34</span></div>
     
     <script>
         const canvas = document.getElementById('gameCanvas');
@@ -237,7 +237,6 @@
         // Update game state
         function update() {
             if (!gameRunning) return;
-            console.log('Update at:', Date.now());
 
             if (inputQueue.length > 0) {
                 const queuedDirection = inputQueue.shift();
