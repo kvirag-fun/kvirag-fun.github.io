@@ -326,17 +326,19 @@
         document.addEventListener('keydown', (e) => {
             const LEFT = 37, UP = 38, RIGHT = 39, DOWN = 40, R = 82;
         
-            // R key ONLY restarts (when game over)
+            // R key ONLY restarts when game over
             if (e.keyCode === R && !gameRunning && gameOverElement.style.visibility === 'visible') {
                 restart();
                 return; // Don't process direction change after restart
             }
             
-            // Arrow keys ALWAYS work (removed gameRunning check)
-            if (e.keyCode === LEFT && dx !== 1) { dx = -1; dy = 0; }
-            if (e.keyCode === UP && dy !== 1) { dx = 0; dy = -1; }
-            if (e.keyCode === RIGHT && dx !== -1) { dx = 1; dy = 0; }
-            if (e.keyCode === DOWN && dy !== -1) { dx = 0; dy = 1; }
+            // Arrow keys ALWAYS work
+            if (gameRunning) {
+                if (e.keyCode === LEFT && dx !== 1) { dx = -1; dy = 0; }
+                if (e.keyCode === UP && dy !== 1) { dx = 0; dy = -1; }
+                if (e.keyCode === RIGHT && dx !== -1) { dx = 1; dy = 0; }
+                if (e.keyCode === DOWN && dy !== -1) { dx = 0; dy = 1; }
+            }
         });
 
         // Handle touch screen input
