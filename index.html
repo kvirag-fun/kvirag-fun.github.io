@@ -82,7 +82,7 @@
         </div>
     </div>
 
-    <div class="version">v<span id="version">0.1.30</span></div>
+    <div class="version">v<span id="version">0.1.31</span></div>
     
     <script>
         const canvas = document.getElementById('gameCanvas');
@@ -361,14 +361,13 @@
             
             // Arrow keys ALWAYS work
             if (gameRunning) {
-                if (e.keyCode === LEFT && dx !== 1) { inputQueue.push({ dx: -1, dy: 0}); }
-                if (e.keyCode === UP && dy !== 1) { inputQueue.push({dx: 0, dy: -1}); }
-                if (e.keyCode === RIGHT && dx !== -1) { inputQueue.push({dx: 1, dy: 0}); }
-                if (e.keyCode === DOWN && dy !== -1) { inputQueue.push({dx: 0, dy: 1}); }
-                console.log(e.keyCode)
+                if (e.keyCode === LEFT && dx !== 1) { inputQueue.push({ dx: -1, dy: 0}); console.log("LEFT"); }
+                if (e.keyCode === UP && dy !== 1) { inputQueue.push({dx: 0, dy: -1}); console.log("UP"); }
+                if (e.keyCode === RIGHT && dx !== -1) { inputQueue.push({dx: 1, dy: 0}); console.log("RIGHT"); }
+                if (e.keyCode === DOWN && dy !== -1) { inputQueue.push({dx: 0, dy: 1}); console.log("DOWN"); }
             }
             
-            /*
+        /*
             // Arrow keys ALWAYS work
             if (gameRunning) {
                 if (!firstInputMade && inputQueue.length !== 1) {
@@ -387,7 +386,7 @@
                     console.log(e.keyCode);
                 }
             }
-            */
+        */
         });
 
         // Handle touch screen input
