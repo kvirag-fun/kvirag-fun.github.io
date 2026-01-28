@@ -82,7 +82,7 @@
         </div>
     </div>
 
-    <div class="version">v<span id="version">0.1.24</span></div>
+    <div class="version">v<span id="version">0.1.25</span></div>
     
     <script>
         const canvas = document.getElementById('gameCanvas');
@@ -342,7 +342,7 @@
         }
 
         // Handle keyboard input
-        document.addEventListener('keypress', (e) => {
+        document.addEventListener('keydown', (e) => {
             const LEFT = 37, UP = 38, RIGHT = 39, DOWN = 40, R = 82;
         
             // R key ONLY restarts when game over
