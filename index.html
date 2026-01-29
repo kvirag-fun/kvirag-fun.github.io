@@ -84,7 +84,7 @@
         </div>
     </div>
 
-    <div class="version">v<span id="version">0.1.41</span></div>
+    <div class="version">v<span id="version">0.1.42</span></div>
     
     <script>
         const canvas = document.getElementById('gameCanvas');
@@ -350,7 +350,7 @@
             gameOverElement.style.visibility = 'hidden';
             gameRunning = true;
             
-            // Resest game speed to default
+            // Resets game speed to default
             gameSpeed = 150
             lastUpdateTime = 0
             
@@ -383,10 +383,10 @@
             if (e.keyCode === DOWN   && lastDir.dy !== -1) newDir = { dx: 0, dy: 1 };
             */
 
-            if (e.keyCode === LEFT  && lastdir.dx !== 1)  { inputQueue.push({ dx: -1, dy: 0}); console.log("LEFT"); }
-            if (e.keyCode === UP    && lastdir.dy !== 1)  { inputQueue.push({dx: 0, dy: -1}); console.log("UP"); }
-            if (e.keyCode === RIGHT && lastdir.dx !== -1) { inputQueue.push({dx: 1, dy: 0}); console.log("RIGHT"); }
-            if (e.keyCode === DOWN  && lastdir.dy !== -1) { inputQueue.push({dx: 0, dy: 1}); console.log("DOWN"); }
+            if (e.keyCode === LEFT  && lastDir.dx !== 1)  { inputQueue.push({ dx: -1, dy: 0}); console.log("LEFT"); }
+            if (e.keyCode === UP    && lastDir.dy !== 1)  { inputQueue.push({dx: 0, dy: -1}); console.log("UP"); }
+            if (e.keyCode === RIGHT && lastDir.dx !== -1) { inputQueue.push({dx: 1, dy: 0}); console.log("RIGHT"); }
+            if (e.keyCode === DOWN  && lastDir.dy !== -1) { inputQueue.push({dx: 0, dy: 1}); console.log("DOWN"); }
 
             /*
             if (newDir) {
