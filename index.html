@@ -84,7 +84,7 @@
         </div>
     </div>
 
-    <div class="version">v<span id="version">0.1.50</span></div>
+    <div class="version">v<span id="version">0.1.51</span></div>
     
     <script>
         const canvas = document.getElementById('gameCanvas');
@@ -339,6 +339,7 @@
                 gameSpeed = getGameSpeed(score);
                 
                 randomFood();
+                randomBadFood();
             } else {
                 snake.pop();
             }
