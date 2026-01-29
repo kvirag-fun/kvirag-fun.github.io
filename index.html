@@ -39,6 +39,27 @@
             margin-top: 20px;
             text-align: center;
         }
+
+        .difficulty-selector {
+            margin: 10px 0;
+            font-size: 16px;
+            text-shadow: 0 0 10px #00ffff;
+        }
+        
+        #difficultySelect {
+            background: #16213e;
+            color: #00ffff;
+            border: 2px solid #00ffff;
+            border-radius: 5px;
+            padding: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0,255,255,0.3);
+        }
+        
+        #difficultySelect:hover {
+            box-shadow: 0 0 20px rgba(0,255,255,0.6);
+        }
     </style>
 </head>
 <body>
@@ -72,12 +93,12 @@
                 <input type="checkbox" id="soundToggle" style="cursor: pointer;"> Sound on
             </label>
             <div class="difficulty-selector" id="difficultySelector">
-                <label>Speed: </label>
+                <label>Difficulty: </label>
                 <select id="difficultySelect">
-                    <option value="easy">🐍 Turtle (250ms)</option>
-                    <option value="normal" selected>⚡ Normal (150ms)</option>
-                    <option value="hard">💀 Expert (100ms)</option>
-                    <option value="insane">🔥 Insane (65ms)</option>
+                    <option value="easy">🐍 Viper</option>
+                    <option value="normal" selected>⚡ Python</option>
+                    <option value="hard">💀 Anaconda</option>
+                    <option value="insane">🔥 King Cobra</option>
                 </select>
             </div>
         </div>
