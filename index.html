@@ -84,7 +84,7 @@
         </div>
     </div>
 
-    <div class="version">v<span id="version">0.1.49</span></div>
+    <div class="version">v<span id="version">0.1.50</span></div>
     
     <script>
         const canvas = document.getElementById('gameCanvas');
@@ -312,7 +312,7 @@
             }
 
             // Check bad food collision
-            if (head.x === badFood.x && badFood.y === food.y) {
+            if (head.x === badFood.x && head.y === badFood.y) {
                 gameOver();
                 return;
             }
