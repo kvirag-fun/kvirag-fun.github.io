@@ -84,7 +84,7 @@
         </div>
     </div>
 
-    <div class="version">v<span id="version">0.1.43</span></div>
+    <div class="version">v<span id="version">0.1.44</span></div>
     
     <script>
         const canvas = document.getElementById('gameCanvas');
@@ -384,7 +384,7 @@
             */
 
             if (e.keyCode === LEFT  && lastDir.dx !== 1)  { inputQueue.push({ dx: -1, dy: 0}); console.log("LEFT"); }
-            if (e.keyCode === UP    && lastDir.dy !== 1)  { inputQueue.push({dx: 0, dy: -1}); console.log("UP"); console.log(lastDir)}
+            if (e.keyCode === UP    && lastDir.dy !== 1 && lastDir.dy !== -1)  { inputQueue.push({dx: 0, dy: -1}); console.log("UP"); console.log(lastDir)}
             if (e.keyCode === RIGHT && lastDir.dx !== -1) { inputQueue.push({dx: 1, dy: 0}); console.log("RIGHT"); }
             if (e.keyCode === DOWN  && lastDir.dy !== -1) { inputQueue.push({dx: 0, dy: 1}); console.log("DOWN"); }
 
