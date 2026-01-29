@@ -84,7 +84,7 @@
         </div>
     </div>
 
-    <div class="version">v<span id="version">0.1.39</span></div>
+    <div class="version">v<span id="version">0.1.40</span></div>
     
     <script>
         const canvas = document.getElementById('gameCanvas');
@@ -373,7 +373,7 @@
             if (!gameRunning) return;
             
             // Decide what the "current" direction is for validation
-                const lastDir = inputQueue.at(-1)
+            const lastDir = inputQueue.length > 0 ? inputQueue.at(-1) : { dy, dy };
 
             /*
             // Arrow keys ALWAYS work
