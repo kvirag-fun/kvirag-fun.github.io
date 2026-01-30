@@ -114,7 +114,7 @@
         </div>
     </div>
 
-    <div class="version">v<span id="version">0.2.06</span></div>
+    <div class="version">v<span id="version">0.2.07</span></div>
     
     <script>
         const canvas = document.getElementById('gameCanvas');
@@ -279,20 +279,20 @@
                 
                 // Draw bad food with stem
                 ctx.fillStyle = '#B5514D';  // Moldy apple outline 
-                ctx.fillRect(px * gridSize + 2, py * gridSize + 4, gridSize - 4, gridSize - 6);
+                ctx.fillRect(px + 2, py + 4, gridSize - 4, gridSize - 6);
                 
                 ctx.fillStyle = '#4A4428';  // Red apple middle 
-                ctx.fillRect(px * gridSize + 2, py * gridSize + 4, gridSize - 6, gridSize - 8);
+                ctx.fillRect(px + 2, py + 4, gridSize - 6, gridSize - 8);
     
                 ctx.fillStyle = '#292E26';  // Black moldy spots
-                ctx.fillRect(px * gridSize + 6, py * gridSize + 6, 3, 3);
-                ctx.fillRect(px * gridSize + 12, py * gridSize + 10, 2, 2);
+                ctx.fillRect(px + 6, py + 6, 3, 3);
+                ctx.fillRect(px + 12, py + 10, 2, 2);
                 
                 ctx.fillStyle = '#2b1d0e';  // Dark brown stem
-                ctx.fillRect(px * gridSize + 8, py * gridSize, 4, 4);
+                ctx.fillRect(px + 8, py, 4, 4);
                 
                 ctx.fillStyle = '#32CD32';  // Lime green leaf
-                ctx.fillRect(px * gridSize + 13, py * gridSize + 1, 3, 2);
+                ctx.fillRect(px + 13, py + 1, 3, 2);
             }
             
             // Normal green for body
