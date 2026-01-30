@@ -114,7 +114,7 @@
         </div>
     </div>
 
-    <div class="version">v<span id="version">0.2.05</span></div>
+    <div class="version">v<span id="version">0.2.06</span></div>
     
     <script>
         const canvas = document.getElementById('gameCanvas');
@@ -133,7 +133,8 @@
         ];
         
         let food = {};
-        let badFood = {}
+        let badFood = {};
+        let badFoodList = [];
         
         let dx = 0;
         let dy = 0;
@@ -233,16 +234,22 @@
         }
 
         function randomBadFood() {
-            let validPosition = false;
-
-            while (!validPosition) {
-                badFood = {
-                    x: Math.floor(Math.random() * tileCount),
-                    y: Math.floor(Math.random() * tileCount)
-                };
-                
-                // Check if  bad food is on any snake segment
-                validPosition = !snake.some(segment => segment.x === food.x && segment.y === food.y);
+            if (Math.random() < 0.2) {
+                let validPosition = false;
+    
+                while (!validPosition) {
+                    let newBadFood = {
+                        x: Math.floor(Math.random() * tileCount),
+                        y: Math.floor(Math.random() * tileCount)
+                    };
+                    
+                    // Check if  bad food is on any snake segment
+                    validPosition = !snake.some(segment => segment.x === newBadFood.x && segment.y === newBadFood.y) && (!food || (food.x !== newBadFood.x || food.y !== newBadFood.y));
+    
+                    if (validPosition) {
+                        badFoodList.push(newBadFood);
+                    }
+                }
             }
         }
         
@@ -266,22 +273,27 @@
             ctx.fillStyle = '#32CD32';  // Lime green leaf
             ctx.fillRect(food.x * gridSize + 13, food.y * gridSize + 1, 3, 2);
 
-            // Draw bad food with stem
-            ctx.fillStyle = '#B5514D';  // Moldy apple outline 
-            ctx.fillRect(badFood.x * gridSize + 2, badFood.y * gridSize + 4, gridSize - 4, gridSize - 6);
-            
-            ctx.fillStyle = '#4A4428';  // Red apple middle 
-            ctx.fillRect(badFood.x * gridSize + 2, badFood.y * gridSize + 4, gridSize - 6, gridSize - 8);
-
-            ctx.fillStyle = '#292E26';  // Black moldy spots
-            ctx.fillRect(badFood.x * gridSize + 6, badFood.y * gridSize + 6, 3, 3);
-            ctx.fillRect(badFood.x * gridSize + 12, badFood.y * gridSize + 10, 2, 2);
-            
-            ctx.fillStyle = '#2b1d0e';  // Dark brown stem
-            ctx.fillRect(badFood.x * gridSize + 8, badFood.y * gridSize, 4, 4);
-            
-            ctx.fillStyle = '#32CD32';  // Lime green leaf
-            ctx.fillRect(badFood.x * gridSize + 13, badFood.y * gridSize + 1, 3, 2);
+            for (const badFood of badFoodList) {
+                const px = badFood.x * gridSize;  // cache pixel X
+                const py = badFood.y * gridSize;  // cache pixel Y
+                
+                // Draw bad food with stem
+                ctx.fillStyle = '#B5514D';  // Moldy apple outline 
+                ctx.fillRect(px * gridSize + 2, py * gridSize + 4, gridSize - 4, gridSize - 6);
+                
+                ctx.fillStyle = '#4A4428';  // Red apple middle 
+                ctx.fillRect(px * gridSize + 2, py * gridSize + 4, gridSize - 6, gridSize - 8);
+    
+                ctx.fillStyle = '#292E26';  // Black moldy spots
+                ctx.fillRect(px * gridSize + 6, py * gridSize + 6, 3, 3);
+                ctx.fillRect(px * gridSize + 12, py * gridSize + 10, 2, 2);
+                
+                ctx.fillStyle = '#2b1d0e';  // Dark brown stem
+                ctx.fillRect(px * gridSize + 8, py * gridSize, 4, 4);
+                
+                ctx.fillStyle = '#32CD32';  // Lime green leaf
+                ctx.fillRect(px * gridSize + 13, py * gridSize + 1, 3, 2);
+            }
             
             // Normal green for body
             ctx.fillStyle = '#ADDDBB';  
@@ -342,9 +354,11 @@
             }
 
             // Check bad food collision
-            if (head.x === badFood.x && head.y === badFood.y) {
-                gameOver();
-                return;
+            for (const badFood of badFoodList) {
+                if (head.x === badFood.x && head.y === badFood.y) {
+                    gameOver();
+                    return;
+                }
             }
             
             snake.unshift(head);
@@ -369,9 +383,8 @@
                 gameSpeed = getGameSpeed(score);
                 
                 randomFood();
-                if (Math.random() < 0.2) {  // 20% chance
-                    randomBadFood();
-                }
+                randomBadFood();
+                
             } else {
                 snake.pop();
             }
