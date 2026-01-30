@@ -441,10 +441,10 @@
             // Resets game speed to default
             gameSpeed = 150
             lastUpdateTime = 0
-            
-            randomFood();
-            randomBadFood()
 
+            badFoodList = [];
+            randomFood();
+            randomBadFood();
             // Reset the input queue
             inputQueue = [];
         }
