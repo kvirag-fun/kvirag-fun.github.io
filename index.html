@@ -114,7 +114,7 @@
         </div>
     </div>
 
-    <div class="version">v<span id="version">0.2.07</span></div>
+    <div class="version">v<span id="version">0.2.08</span></div>
     
     <script>
         const canvas = document.getElementById('gameCanvas');
@@ -150,6 +150,7 @@
         let lastTap = 0;
         const doubleTapDelay = 400;
 
+        let needsRedraw = true;
         let lastUpdateTime = 0
         
         // High score management
@@ -516,10 +517,15 @@
             // Only update game logic when enough time passed
             if (time - lastUpdateTime >= gameSpeed) {
                 update();
+                needsRedraw = true; // Only redraw after logic update
                 lastUpdateTime = time;  // Reset timer
             }
+
+            if (needsRedraw) {
+                drawGame();
+                needsRedraw = false;
+            }
             
-            drawGame(); // Always draw smoothly
             requestAnimationFrame(gameLoop);
         }
 
