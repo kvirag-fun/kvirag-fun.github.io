@@ -245,7 +245,7 @@
                         y: Math.floor(Math.random() * tileCount)
                     };
                     
-                    // Check if  bad food is on any snake segment
+                    // Check if bad food is on any SNAKE or FOOD segment
                     validPosition = !snake.some(segment => segment.x === newBadFood.x && segment.y === newBadFood.y) && (!food || (food.x !== newBadFood.x || food.y !== newBadFood.y));
     
                     if (validPosition) {
