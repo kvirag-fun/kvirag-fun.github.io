@@ -60,6 +60,20 @@
         #difficultySelect:hover {
             box-shadow: 0 0 20px rgba(0,255,255,0.6);
         }
+
+        @media (max-width: 480px) {
+            .flex-container { 
+                flex-direction: column !important; 
+                gap: 10px !important; 
+            }
+            canvas { 
+                width: 95vw !important; 
+                height: 95vw !important; 
+                max-width: 400px; 
+                max-height: 400px; 
+            }
+        }
+        
     </style>
 </head>
 <body>
@@ -121,7 +135,7 @@
         </div>
     </div>
 
-    <div class="version">v<span id="version">0.2.14</span></div>
+    <div class="version">v<span id="version">0.3.01</span></div>
     
     <script>
         const canvas = document.getElementById('gameCanvas');
