@@ -108,7 +108,7 @@
     <div class="flex-container" style="width: 100%; max-width: 400px; margin: 10px 0; display: flex; gap: 30px; align-items: flex-start">
         <!-- Leaderboard -->
         <div class="leaderboard" style="font-size: 14px; margin: 10px 0 10px 0; text-shadow: 0 0 5px #00ffff; line-height: 1.3em; text-align: left; width: 200px;">
-            Leaderboard:<br>
+            Leaderboard ({{difficulty}}):<br>
             <div id="topScoresList" style="margin-top: 2px; font-size: 12px;">
                 1. 0<br>2. 0<br>3. 0<br>4. 0<br>5. 0
             </div>
@@ -136,6 +136,7 @@
         const difficultySelect = document.getElementById('difficultySelect');
         difficultySelect.addEventListener('change', function() {
             this.blur();
+            displayLeaderboard();
         });
     </script>
     
@@ -149,7 +150,7 @@
         </div>
     </div>
 
-    <div class="version">v<span id="version">0.3.08</span></div>
+    <div class="version">v<span id="version">0.3.09</span></div>
     
     <script>
         const canvas = document.getElementById('gameCanvas');
@@ -206,13 +207,19 @@
             document.getElementById('highScore').textContent = getHighScore();
         }
 
+        function getDifficultyKey() {
+            return `snakeTopScores_${difficultySelect.value}`;
+        }
+        
         // Leaderboard management
         function getLeaderboard() {
-            const scores = localStorage.getItem('snakeTopScores');
+            const key = getDifficultyKey();
+            const scores = localStorage.getItem(key);
             return scores ? JSON.parse(scores) : [];
         }
         
         function updateLeaderboard(newScore) {
+            const key = getDifficultyKey();
             let scores = getLeaderboard();
             
             // Add new score
@@ -223,7 +230,7 @@
             scores = scores.slice(0, 5);
             
             // Save back to localStorage
-            localStorage.setItem('snakeTopScores', JSON.stringify(scores));
+            localStorage.setItem(key, JSON.stringify(scores));
             
             // Update display
             displayLeaderboard();
