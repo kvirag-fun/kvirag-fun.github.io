@@ -39,6 +39,27 @@
             margin-top: 20px;
             text-align: center;
         }
+
+        .difficulty-selector {
+            margin: 10px 0 10px 0;
+            font-size: 14px;
+            text-shadow: 0 0 5px #00ffff;
+        }
+        
+        #difficultySelect {
+            background: #16213e;
+            color: #00ffff;
+            border: 2px solid #00ffff;
+            border-radius: 5px;
+            padding: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0,255,255,0.3);
+        }
+        
+        #difficultySelect:hover {
+            box-shadow: 0 0 20px rgba(0,255,255,0.6);
+        }
     </style>
 </head>
 <body>
@@ -71,12 +92,28 @@
             <label style="font-size: 12px;">
                 <input type="checkbox" id="soundToggle" style="cursor: pointer;"> Sound on
             </label>
+            <div class="difficulty-selector" id="difficultySelector">
+                <label>Difficulty: </label>
+                <select id="difficultySelect">
+                    <option value=0 selected>🐍 Viper</option>
+                    <option value=0.2>⚡ Python</option>
+                    <option value=0.35>💀 Anaconda</option>
+                    <option value=0.5>🔥 King Cobra</option>
+                </select>
+            </div>
         </div>
     </div>
+
+    <script>
+        const difficultySelect = document.getElementById('difficultySelect');
+        difficultySelect.addEventListener('change', function() {
+            this.blur();
+        });
+    </script>
     
     <!-- Game canvas -->
     <canvas id="gameCanvas" width="400" height="400"></canvas>
-        
+
     <div class="controls">
         <div>Use ARROW KEYS or SWIPE to move</div>
         <div id="gameOver" style="height: 30px; visibility: hidden; color:#ff0000; font-size:20px;">
@@ -84,7 +121,7 @@
         </div>
     </div>
 
-    <div class="version">v<span id="version">0.1.42</span></div>
+    <div class="version">v<span id="version">0.2.14</span></div>
     
     <script>
         const canvas = document.getElementById('gameCanvas');
@@ -97,11 +134,16 @@
         // Game settings
         const gridSize = 20;
         const tileCount = canvas.width / gridSize;
+        const difficultyCurve = [0, 20, 35, 50]
 
         let snake = [
             {x: 10, y: 10}
         ];
+        
         let food = {};
+        let badFood = {};
+        let badFoodList = [];
+        
         let dx = 0;
         let dy = 0;
         let score = 0;
@@ -116,6 +158,7 @@
         let lastTap = 0;
         const doubleTapDelay = 400;
 
+        let needsRedraw = true;
         let lastUpdateTime = 0
         
         // High score management
@@ -194,11 +237,47 @@
                     y: Math.floor(Math.random() * tileCount)
                 };
                 
-                // Check if food is on any snake segment
-                validPosition = !snake.some(segment => segment.x === food.x && segment.y === food.y);
+                // Check collision with SNAKE
+                const collidesWithSnake = snake.some(segment => segment.x === food.x && segment.y === food.y);
+                
+                // Check collision with BAD FOOD
+                const collidesWithBadFood = badFoodList.some(badFood => badFood.x === food.x && badFood.y === food.y);
+
+                validPosition = !collidesWithSnake && !collidesWithBadFood;
             }
         }
 
+        function randomBadFood() {
+            const spawnChance = getGameDifficulty()
+            
+            if (Math.random() < spawnChance) {
+                let validPosition = false;
+                let newBadFood;
+    
+                while (!validPosition) {
+                    newBadFood = {
+                        x: Math.floor(Math.random() * tileCount),
+                        y: Math.floor(Math.random() * tileCount)
+                    };
+                    
+                    // Check collision with SNAKE
+                    const snakeCollision = snake.some(segment => segment.x === newBadFood.x && segment.y === newBadFood.y);
+
+                    // Check collision with FOOD
+                    const regularFoodCollision = food.x === newBadFood.x && food.y === newBadFood.y;
+
+                    // Check collision with BAD FOOD
+                    const badFoodCollision = badFoodList.some(badFood => badFood.x === newBadFood.x && badFood.y === newBadFood.y);
+
+                    validPosition = !snakeCollision && !badFoodCollision && !regularFoodCollision;
+                }
+                
+                if (validPosition) {
+                    badFoodList.push(newBadFood);
+                }
+            }
+        }
+        
         // Draw game elements
         function drawGame() {
             // Clear canvas
@@ -209,7 +288,7 @@
             // Draw food with stem
             ctx.fillStyle = '#ff0000';  // Red apple outline
             ctx.fillRect(food.x * gridSize + 2, food.y * gridSize + 4, gridSize - 4, gridSize - 6);
-
+            
             ctx.fillStyle = '#B5514D';  // Red apple middle
             ctx.fillRect(food.x * gridSize + 2, food.y * gridSize + 4, gridSize - 6, gridSize - 8);
             
@@ -219,6 +298,28 @@
             ctx.fillStyle = '#32CD32';  // Lime green leaf
             ctx.fillRect(food.x * gridSize + 13, food.y * gridSize + 1, 3, 2);
 
+            for (const badFood of badFoodList) {
+                const px = badFood.x * gridSize;  // cache pixel X
+                const py = badFood.y * gridSize;  // cache pixel Y
+                
+                // Draw bad food with stem
+                ctx.fillStyle = '#B5514D';  // Moldy apple outline 
+                ctx.fillRect(px + 2, py + 4, gridSize - 4, gridSize - 6);
+                
+                ctx.fillStyle = '#4A4428';  // Red apple middle 
+                ctx.fillRect(px + 2, py + 4, gridSize - 6, gridSize - 8);
+    
+                ctx.fillStyle = '#292E26';  // Black moldy spots
+                ctx.fillRect(px + 6, py + 6, 3, 3);
+                ctx.fillRect(px + 12, py + 10, 2, 2);
+                
+                ctx.fillStyle = '#2b1d0e';  // Dark brown stem
+                ctx.fillRect(px + 8, py, 4, 4);
+                
+                ctx.fillStyle = '#32CD32';  // Lime green leaf
+                ctx.fillRect(px + 13, py + 1, 3, 2);
+            }
+            
             // Normal green for body
             ctx.fillStyle = '#ADDDBB';  
             for (let i = 1; i < snake.length; i++) {
@@ -277,6 +378,14 @@
                 }
             }
 
+            // Check bad food collision
+            for (const badFood of badFoodList) {
+                if (head.x === badFood.x && head.y === badFood.y) {
+                    gameOver();
+                    return;
+                }
+            }
+            
             snake.unshift(head);
 
             // Check food collision
@@ -299,6 +408,8 @@
                 gameSpeed = getGameSpeed(score);
                 
                 randomFood();
+                randomBadFood();
+                
             } else {
                 snake.pop();
             }
@@ -320,6 +431,13 @@
             
             // God-tier (900+): Impossible for humans
             else return Math.max(50, 80 - ((score-900) * 0.02));     // 80→50ms
+        }
+
+        //Get game difficulty
+        function getGameDifficulty() {
+            const difficultySelect = document.getElementById('difficultySelect');
+            console.log(difficultySelect.value)
+            return parseFloat(difficultySelect.value);
         }
         
         // Game over
@@ -353,9 +471,10 @@
             // Resets game speed to default
             gameSpeed = 150
             lastUpdateTime = 0
-            
-            randomFood();
 
+            badFoodList = [];
+            randomFood();
+            randomBadFood();
             // Reset the input queue
             inputQueue = [];
         }
@@ -365,7 +484,7 @@
             const LEFT = 37, UP = 38, RIGHT = 39, DOWN = 40, R = 82;
         
             // R key ONLY restarts when game over
-            if (e.keyCode === R && !gameRunning && gameOverElement.style.visibility === 'visible') {
+            if (e.keyCode === R && !gameRunning) {
                 restart();
                 return; // Don't process direction change after restart
             }
@@ -375,25 +494,10 @@
             // Decide what the "current" direction is for validation
             const lastDir = inputQueue.length > 0 ? inputQueue.at(-1) : { dx, dy };
 
-            /*
-            // Arrow keys ALWAYS work
-            if (e.keyCode === LEFT   && lastDir.dx !== 1)  newDir = { dx: -1, dy: 0 };
-            if (e.keyCode === UP     && lastDir.dy !== 1)  newDir = { dx: 0, dy: -1 };
-            if (e.keyCode === RIGHT  && lastDir.dx !== -1) newDir = { dx: 1, dy: 0 };
-            if (e.keyCode === DOWN   && lastDir.dy !== -1) newDir = { dx: 0, dy: 1 };
-            */
-
-            if (e.keyCode === LEFT  && lastDir.dx !== 1)  { inputQueue.push({ dx: -1, dy: 0}); console.log("LEFT"); }
-            if (e.keyCode === UP    && lastDir.dy !== 1)  { inputQueue.push({dx: 0, dy: -1}); console.log("UP"); }
-            if (e.keyCode === RIGHT && lastDir.dx !== -1) { inputQueue.push({dx: 1, dy: 0}); console.log("RIGHT"); }
-            if (e.keyCode === DOWN  && lastDir.dy !== -1) { inputQueue.push({dx: 0, dy: 1}); console.log("DOWN"); }
-
-            /*
-            if (newDir) {
-                // keep only one pending input to avoid long, stale queues
-                inputQueue = [newDir];
-            }
-            */
+            if (e.keyCode === LEFT  && lastDir.dx !== 1  && lastDir.dx !== -1)  { inputQueue.push({ dx: -1, dy: 0}); console.log("LEFT"); }
+            if (e.keyCode === UP    && lastDir.dy !== 1  && lastDir.dy !== -1)  { inputQueue.push({dx: 0, dy: -1}); console.log("UP"); }
+            if (e.keyCode === RIGHT && lastDir.dx !== -1 && lastDir.dx !== 1)   { inputQueue.push({dx: 1, dy: 0}); console.log("RIGHT"); }
+            if (e.keyCode === DOWN  && lastDir.dy !== -1 && lastDir.dy !== 1)   { inputQueue.push({dx: 0, dy: 1}); console.log("DOWN"); }
         });
 
         // Handle touch screen input
@@ -444,15 +548,21 @@
             // Only update game logic when enough time passed
             if (time - lastUpdateTime >= gameSpeed) {
                 update();
+                needsRedraw = true; // Only redraw after logic update
                 lastUpdateTime = time;  // Reset timer
             }
+
+            if (needsRedraw) {
+                drawGame();
+                needsRedraw = false;
+            }
             
-            drawGame(); // Always draw smoothly
             requestAnimationFrame(gameLoop);
         }
 
         // Initialize and start
         randomFood();
+        randomBadFood()
         updateHighScoreDisplay();
         displayLeaderboard();
         requestAnimationFrame(gameLoop);
