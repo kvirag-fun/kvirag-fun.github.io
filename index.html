@@ -108,7 +108,7 @@
     <div class="flex-container" style="width: 100%; max-width: 400px; margin: 10px 0; display: flex; gap: 30px; align-items: flex-start">
         <!-- Leaderboard -->
         <div class="leaderboard" style="font-size: 14px; margin: 10px 0 10px 0; text-shadow: 0 0 5px #00ffff; line-height: 1.3em; text-align: left; width: 200px;">
-            Leaderboard ({{difficulty}}):<br>
+            Leaderboard (<span id="currentDifficulty">Viper</span>):<br>
             <div id="topScoresList" style="margin-top: 2px; font-size: 12px;">
                 1. 0<br>2. 0<br>3. 0<br>4. 0<br>5. 0
             </div>
@@ -136,6 +136,7 @@
         const difficultySelect = document.getElementById('difficultySelect');
         difficultySelect.addEventListener('change', function() {
             this.blur();
+            updateDifficultyDisplay();
             displayLeaderboard();
         });
     </script>
@@ -150,7 +151,7 @@
         </div>
     </div>
 
-    <div class="version">v<span id="version">0.3.09</span></div>
+    <div class="version">v<span id="version">0.3.10</span></div>
     
     <script>
         const canvas = document.getElementById('gameCanvas');
@@ -192,7 +193,8 @@
         
         // High score management
         function getHighScore() {
-            return parseInt(localStorage.getItem('snakeHighScore')) || 0;
+            const key = getDifficultyKey().replace('TopScores', 'HighScore');
+            return parseInt(localStorage.getItem(key)) || 0;
         }
 
         function setHighScore(score) {
@@ -208,7 +210,20 @@
         }
 
         function getDifficultyKey() {
+            const difficultySelect = document.getElementById('difficultySelect');
             return `snakeTopScores_${difficultySelect.value}`;
+        }
+
+        function updateDifficultyDisplay() {
+            const difficultySelect = document.getElementById('difficultySelect');
+            const currentDifficulty = document.getElementById('currentDifficulty');
+            const options = {
+                '0.00': 'Viper 🐍',
+                '0.25': 'Python ⚡', 
+                '0.50': 'Anaconda 💀',
+                '1.00': 'King Cobra 🔥'
+            };
+            currentDifficulty.textContent = options[difficultySelect.value] || 'Viper 🐍';
         }
         
         // Leaderboard management
@@ -605,6 +620,7 @@
         randomFood();
         randomBadFood()
         updateHighScoreDisplay();
+        updateDifficultyDisplay();
         displayLeaderboard();
         requestAnimationFrame(gameLoop);
     </script>
