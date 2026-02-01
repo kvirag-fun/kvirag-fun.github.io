@@ -151,7 +151,7 @@
         </div>
     </div>
 
-    <div class="version">v<span id="version">0.3.10</span></div>
+    <div class="version">v<span id="version">0.3.11</span></div>
     
     <script>
         const canvas = document.getElementById('gameCanvas');
@@ -193,14 +193,14 @@
         
         // High score management
         function getHighScore() {
-            const key = getDifficultyKey().replace('TopScores', 'HighScore');
-            return parseInt(localStorage.getItem(key)) || 0;
+            return parseInt(localStorage.getItem('snakeHighScore')) || 0;
         }
 
         function setHighScore(score) {
             const currentHigh = getHighScore();
             if (score > currentHigh) {
-                localStorage.setItem('snakeHighScore', score);
+                const key = getDifficultyKey().replace('TopScores', 'HighScore');
+                localStorage.setItem(key, score);
                 document.getElementById('highScore').textContent = score;
             }
         }
