@@ -114,7 +114,7 @@
         </div>
     </div>
 
-    <div class="version">v<span id="version">0.2.12</span></div>
+    <div class="version">v<span id="version">0.2.13</span></div>
     
     <script>
         const canvas = document.getElementById('gameCanvas');
@@ -245,9 +245,10 @@
             
             if (Math.random() < spawnChance) {
                 let validPosition = false;
+                let newBadFood;
     
                 while (!validPosition) {
-                    let newBadFood = {
+                    newBadFood = {
                         x: Math.floor(Math.random() * tileCount),
                         y: Math.floor(Math.random() * tileCount)
                     };
