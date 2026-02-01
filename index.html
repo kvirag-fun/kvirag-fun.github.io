@@ -12,6 +12,7 @@
             align-items: center;
             justify-content: center;
             min-height: 100vh;
+            height: auto;
             margin: 0;
             background: #1a1a2e;
             font-family: Arial, sans-serif;
@@ -19,7 +20,6 @@
             
             /* Disable touch controls */
             overflow: hidden;
-            height: 100vh;
             touch-action: none;
             overscroll-behavior: none;
 
@@ -65,6 +65,7 @@
             .score {
                 display: flex !important;
                 flex-wrap: nowrap !important;
+            }
             
             .flex-container {
                 gap: 5px !important;
@@ -148,7 +149,7 @@
         </div>
     </div>
 
-    <div class="version">v<span id="version">0.3.05</span></div>
+    <div class="version">v<span id="version">0.3.06</span></div>
     
     <script>
         const canvas = document.getElementById('gameCanvas');
