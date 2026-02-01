@@ -114,7 +114,7 @@
         </div>
     </div>
 
-    <div class="version">v<span id="version">0.2.08</span></div>
+    <div class="version">v<span id="version">0.2.09</span></div>
     
     <script>
         const canvas = document.getElementById('gameCanvas');
@@ -230,8 +230,13 @@
                     y: Math.floor(Math.random() * tileCount)
                 };
                 
-                // Check if food is on any snake segment
-                validPosition = !snake.some(segment => segment.x === food.x && segment.y === food.y);
+                // Check collision with SNAKE
+                const collidesWithSnake = snake.some(segment => segment.x === food.x && segment.y === food.y);
+                
+                // Check collision with BAD FOOD
+                const collidesWithBadFood = badFoodList.some(badFood => badFood.x === food.x && badFood.y === food.y);
+
+                validPosition = !collidesWithSnake && !collidesWithBadFood;
             }
         }
 
@@ -245,9 +250,17 @@
                         y: Math.floor(Math.random() * tileCount)
                     };
                     
-                    // Check if bad food is on any SNAKE or FOOD segment
-                    validPosition = !snake.some(segment => segment.x === newBadFood.x && segment.y === newBadFood.y) && (!food || (food.x !== newBadFood.x || food.y !== newBadFood.y));
-    
+                    // Check collision with SNAKE
+                    const snakeCollision = snake.some(segment => segment.x === newBadFood.x && segment.y === newBadFood);
+
+                    // Check collision with FOOD
+                    const regularFoodCollision = food.x === newBadFood.x && food.y === newBadFood.y;
+
+                    // Check collision with BAD FOOD
+                    const badFoodCollision = badFoodList.some(badFood => badFood.x === newBadFood.x && badFood.y === newBadFood.y);
+
+                    validPosition = !snakeCollision && !badFoodCollision && !regularFoodCollision;
+                    
                     if (validPosition) {
                         badFoodList.push(newBadFood);
                     }
