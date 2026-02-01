@@ -63,7 +63,8 @@
 
         @media (max-width: 480px) {
             .score {
-                font-size: 18px !important;
+                display: flex !important;
+                flex-wrap: nowrap !important;
             
             .flex-container {
                 gap: 5px !important;
@@ -147,7 +148,7 @@
         </div>
     </div>
 
-    <div class="version">v<span id="version">0.3.04</span></div>
+    <div class="version">v<span id="version">0.3.05</span></div>
     
     <script>
         const canvas = document.getElementById('gameCanvas');
