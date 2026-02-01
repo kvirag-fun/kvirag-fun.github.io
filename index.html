@@ -95,10 +95,10 @@
             <div class="difficulty-selector" id="difficultySelector">
                 <label>Difficulty: </label>
                 <select id="difficultySelect">
-                    <option value="easy" selected>🐍 Viper</option>
-                    <option value="normal">⚡ Python</option>
-                    <option value="hard">💀 Anaconda</option>
-                    <option value="insane">🔥 King Cobra</option>
+                    <option value=0 selected>🐍 Viper</option>
+                    <option value=0.2>⚡ Python</option>
+                    <option value=0.35>💀 Anaconda</option>
+                    <option value=0.5>🔥 King Cobra</option>
                 </select>
             </div>
         </div>
@@ -114,7 +114,7 @@
         </div>
     </div>
 
-    <div class="version">v<span id="version">0.2.09</span></div>
+    <div class="version">v<span id="version">0.2.10</span></div>
     
     <script>
         const canvas = document.getElementById('gameCanvas');
@@ -241,7 +241,9 @@
         }
 
         function randomBadFood() {
-            if (Math.random() < 0.2) {
+            const spawnChance = getGameDifficulty()
+            
+            if (Math.random() < spawnChance) {
                 let validPosition = false;
     
                 while (!validPosition) {
@@ -422,6 +424,11 @@
             // God-tier (900+): Impossible for humans
             else return Math.max(50, 80 - ((score-900) * 0.02));     // 80→50ms
         }
+
+        //Get game disfficulty
+        function getGameDifficulty() {
+            const difficultySelect = document.getElementById('difficultySelect');
+            return difficultySelect.value
         
         // Game over
         function gameOver() {
