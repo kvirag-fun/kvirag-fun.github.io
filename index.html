@@ -149,7 +149,7 @@
         </div>
     </div>
 
-    <div class="version">v<span id="version">0.3.07</span></div>
+    <div class="version">v<span id="version">0.3.08</span></div>
     
     <script>
         const canvas = document.getElementById('gameCanvas');
@@ -303,7 +303,7 @@
                     // Check collision with BAD FOOD
                     const badFoodCollision = badFoodList.some(badFood => badFood.x === newBadFood.x && badFood.y === newBadFood.y);
 
-                    validPosition = !snakeCollision && !badFoodCollision && !regularFoodCollision && tooCloseToHead;
+                    validPosition = !snakeCollision && !badFoodCollision && !regularFoodCollision && !tooCloseToHead;
                 }
                 
                 if (validPosition) {
