@@ -103,10 +103,17 @@
             </div>
         </div>
     </div>
+
+    <script>
+        const difficultySelect = document.getElementById('difficultySelect');
+        difficultySelect.addEventListener('change', function() {
+            this.blur();
+        });
+    </script>
     
     <!-- Game canvas -->
     <canvas id="gameCanvas" width="400" height="400"></canvas>
-        
+
     <div class="controls">
         <div>Use ARROW KEYS or SWIPE to move</div>
         <div id="gameOver" style="height: 30px; visibility: hidden; color:#ff0000; font-size:20px;">
@@ -114,7 +121,7 @@
         </div>
     </div>
 
-    <div class="version">v<span id="version">0.2.13</span></div>
+    <div class="version">v<span id="version">0.2.14</span></div>
     
     <script>
         const canvas = document.getElementById('gameCanvas');
