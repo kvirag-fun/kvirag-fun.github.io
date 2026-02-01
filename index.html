@@ -114,7 +114,7 @@
         </div>
     </div>
 
-    <div class="version">v<span id="version">0.2.10</span></div>
+    <div class="version">v<span id="version">0.2.11</span></div>
     
     <script>
         const canvas = document.getElementById('gameCanvas');
@@ -253,7 +253,7 @@
                     };
                     
                     // Check collision with SNAKE
-                    const snakeCollision = snake.some(segment => segment.x === newBadFood.x && segment.y === newBadFood);
+                    const snakeCollision = snake.some(segment => segment.x === newBadFood.x && segment.y === newBadFood.y);
 
                     // Check collision with FOOD
                     const regularFoodCollision = food.x === newBadFood.x && food.y === newBadFood.y;
@@ -262,10 +262,10 @@
                     const badFoodCollision = badFoodList.some(badFood => badFood.x === newBadFood.x && badFood.y === newBadFood.y);
 
                     validPosition = !snakeCollision && !badFoodCollision && !regularFoodCollision;
-                    
-                    if (validPosition) {
-                        badFoodList.push(newBadFood);
-                    }
+                }
+                
+                if (validPosition) {
+                    badFoodList.push(newBadFood);
                 }
             }
         }
@@ -428,7 +428,8 @@
         //Get game disfficulty
         function getGameDifficulty() {
             const difficultySelect = document.getElementById('difficultySelect');
-            return difficultySelect.value
+            return difficultySelect.value;
+        }
         
         // Game over
         function gameOver() {
@@ -474,7 +475,7 @@
             const LEFT = 37, UP = 38, RIGHT = 39, DOWN = 40, R = 82;
         
             // R key ONLY restarts when game over
-            if (e.keyCode === R && !gameRunning && gameOverElement.style.visibility === 'visible') {
+            if (e.keyCode === R && !gameRunning) {
                 restart();
                 return; // Don't process direction change after restart
             }
