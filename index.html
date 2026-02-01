@@ -149,7 +149,7 @@
         </div>
     </div>
 
-    <div class="version">v<span id="version">0.3.06</span></div>
+    <div class="version">v<span id="version">0.3.07</span></div>
     
     <script>
         const canvas = document.getElementById('gameCanvas');
@@ -287,6 +287,12 @@
                         x: Math.floor(Math.random() * tileCount),
                         y: Math.floor(Math.random() * tileCount)
                     };
+
+                    const head = snake[0]; // Snake head position
+                                
+                    // No bad apple directly in fron of the snake with a 3-tile safety zone
+                    const tooCloseToHead = Math.abs(newBadFood.x - head.x) <= 2 && 
+                                           Math.abs(newBadFood.y - head.y) <= 2;
                     
                     // Check collision with SNAKE
                     const snakeCollision = snake.some(segment => segment.x === newBadFood.x && segment.y === newBadFood.y);
@@ -297,7 +303,7 @@
                     // Check collision with BAD FOOD
                     const badFoodCollision = badFoodList.some(badFood => badFood.x === newBadFood.x && badFood.y === newBadFood.y);
 
-                    validPosition = !snakeCollision && !badFoodCollision && !regularFoodCollision;
+                    validPosition = !snakeCollision && !badFoodCollision && !regularFoodCollision && tooCloseToHead;
                 }
                 
                 if (validPosition) {
