@@ -199,8 +199,7 @@
         function setHighScore(score) {
             const currentHigh = getHighScore();
             if (score > currentHigh) {
-                const key = getDifficultyKey().replace('TopScores', 'HighScore');
-                localStorage.setItem(key, score);
+                localStorage.setItem('snakeHighScore', score);
                 document.getElementById('highScore').textContent = score;
             }
         }
