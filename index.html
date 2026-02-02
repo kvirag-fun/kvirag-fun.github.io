@@ -100,8 +100,7 @@
     
     <div class="score">
         Score: <span id="score">0</span> | 
-        Level: <span id="level">1</span> | 
-        High Score: <span id="highScore">0</span>
+        Level: <span id="level">1</span>
     </div>
 
     <!-- Flexbox side-by-side -->
@@ -190,23 +189,6 @@
 
         let needsRedraw = true;
         let lastUpdateTime = 0
-        
-        // High score management
-        function getHighScore() {
-            return parseInt(localStorage.getItem('snakeHighScore')) || 0;
-        }
-
-        function setHighScore(score) {
-            const currentHigh = getHighScore();
-            if (score > currentHigh) {
-                localStorage.setItem('snakeHighScore', score);
-                document.getElementById('highScore').textContent = score;
-            }
-        }
-
-        function updateHighScoreDisplay() {
-            document.getElementById('highScore').textContent = getHighScore();
-        }
 
         function getDifficultyKey() {
             const difficultySelect = document.getElementById('difficultySelect');
@@ -518,8 +500,7 @@
             dy = 0;
             score = 0;
             scoreElement.textContent = score;
-            updateLevelDisplay(score); 
-            updateHighScoreDisplay();
+            updateLevelDisplay(score);
             gameOverElement.style.visibility = 'hidden';
             gameRunning = true;
             
@@ -618,7 +599,6 @@
         // Initialize and start
         randomFood();
         randomBadFood()
-        updateHighScoreDisplay();
         updateDifficultyDisplay();
         displayLeaderboard();
         requestAnimationFrame(gameLoop);
