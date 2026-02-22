@@ -150,7 +150,7 @@
         </div>
     </div>
 
-    <div class="version">v<span id="version">0.3.14</span></div>
+    <div class="version">v<span id="version">0.3.15</span></div>
     
     <script>
         const canvas = document.getElementById('gameCanvas');
@@ -390,10 +390,13 @@
         function update() {
             if (!gameRunning) return;
 
+            // Get next direction from queue OR use current dx/dy
+            let nextDx = dx;
+            let nextDy = dy;
             if (inputQueue.length > 0) {
-                const queuedDirection = inputQueue.shift();
-                dx = queuedDirection.dx;
-                dy = queuedDirection.dy;
+                const queued = inputQueue.shift();
+                nextDx = queued.dx;
+                nextDy = queued.dy;
             }
 
             // Don't move if no direction set
@@ -425,6 +428,9 @@
             
             snake.unshift(head);
 
+            dx = moveDx;
+            dy = moveDy;
+            
             // Check food collision
             if (head.x === food.x && head.y === food.y) {
 
