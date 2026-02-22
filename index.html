@@ -20,7 +20,7 @@
             
             /* Disable touch controls */
             overflow: hidden;
-            touch-action: none;
+            /* touch-action: none; */
             overscroll-behavior: none;
 
         }
@@ -146,7 +146,7 @@
         </div>
     </div>
 
-    <div class="version">v<span id="version">0.3.33</span></div>
+    <div class="version">v<span id="version">0.3.34</span></div>
     
     <script>
         const canvas = document.getElementById('gameCanvas');
@@ -190,7 +190,7 @@
         
         //Double tap settings
         let lastTap = 0;
-        const doubleTapDelay = 400;
+        const doubleTapDelay = 300;
 
         let needsRedraw = true;
         let lastUpdateTime = 0
@@ -597,13 +597,13 @@
         let touchStartX = 0;
         let touchStartY = 0;
 
-        document.addEventListener('touchstart', (e) => {
+        canvas.addEventListener('touchstart', (e) => {
             e.preventDefault();
             touchStartX = e.touches[0].clientX;
             touchStartY = e.touches[0].clientY;
-        });
+        }, { passive: false });
 
-        document.addEventListener('touchend', (e) => {
+        canvas.addEventListener('touchend', (e) => {
             e.preventDefault();
 
             // Double-tap to restart
