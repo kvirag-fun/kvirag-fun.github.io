@@ -12,6 +12,7 @@
             align-items: center;
             justify-content: center;
             min-height: 100vh;
+            height: auto;
             margin: 0;
             background: #1a1a2e;
             font-family: Arial, sans-serif;
@@ -19,8 +20,7 @@
             
             /* Disable touch controls */
             overflow: hidden;
-            height: 100vh;
-            touch-action: none;
+            /* touch-action: none;*/
             overscroll-behavior: none;
 
         }
@@ -45,6 +45,11 @@
             font-size: 14px;
             text-shadow: 0 0 5px #00ffff;
         }
+
+        #difficultySelect:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
         
         #difficultySelect {
             background: #16213e;
@@ -60,6 +65,34 @@
         #difficultySelect:hover {
             box-shadow: 0 0 20px rgba(0,255,255,0.6);
         }
+
+        @media (max-width: 480px) {
+            .score {
+                display: flex !important;
+                flex-wrap: nowrap !important;
+            }
+            
+            .flex-container {
+                gap: 5px !important;
+                width: 95vw !important;
+                justify-content: center !important;
+            }
+            
+            .leaderboard, .settings { 
+                width: 48% !important;
+                font-size: 12px !important;
+            }
+
+            #topScoresList { font-size: 10px !important; }
+            
+            canvas { 
+                width: 95vw !important; 
+                height: 95vw !important; 
+                max-width: 400px; 
+                max-height: 400px; 
+            }
+        }
+        
     </style>
 </head>
 <body>
@@ -72,15 +105,14 @@
     
     <div class="score">
         Score: <span id="score">0</span> | 
-        Level: <span id="level">1</span> | 
-        High Score: <span id="highScore">0</span>
+        Level: <span id="level">1</span>
     </div>
 
     <!-- Flexbox side-by-side -->
     <div class="flex-container" style="width: 100%; max-width: 400px; margin: 10px 0; display: flex; gap: 30px; align-items: flex-start">
         <!-- Leaderboard -->
         <div class="leaderboard" style="font-size: 14px; margin: 10px 0 10px 0; text-shadow: 0 0 5px #00ffff; line-height: 1.3em; text-align: left; width: 200px;">
-            Leaderboard:<br>
+            Top 5 - <span id="currentDifficulty">Viper</span>:<br>
             <div id="topScoresList" style="margin-top: 2px; font-size: 12px;">
                 1. 0<br>2. 0<br>3. 0<br>4. 0<br>5. 0
             </div>
@@ -95,21 +127,14 @@
             <div class="difficulty-selector" id="difficultySelector">
                 <label>Difficulty: </label>
                 <select id="difficultySelect">
-                    <option value=0 selected>🐍 Viper</option>
-                    <option value=0.2>⚡ Python</option>
-                    <option value=0.35>💀 Anaconda</option>
-                    <option value=0.5>🔥 King Cobra</option>
+                    <option value=0.00 selected>🐍 Viper</option>
+                    <option value=0.25>⚡ Python</option>
+                    <option value=0.50>💀 Anaconda</option>
+                    <option value=1.00>🔥 King Cobra</option>
                 </select>
             </div>
         </div>
     </div>
-
-    <script>
-        const difficultySelect = document.getElementById('difficultySelect');
-        difficultySelect.addEventListener('change', function() {
-            this.blur();
-        });
-    </script>
     
     <!-- Game canvas -->
     <canvas id="gameCanvas" width="400" height="400"></canvas>
@@ -121,7 +146,7 @@
         </div>
     </div>
 
-    <div class="version">v<span id="version">0.2.14</span></div>
+    <div class="version">v<span id="version">0.3.24</span></div>
     
     <script>
         const canvas = document.getElementById('gameCanvas');
@@ -130,7 +155,17 @@
         const levelElement = document.getElementById('level');
         const gameOverElement = document.getElementById('gameOver');
         const soundToggle = document.getElementById('soundToggle');
+        const difficultySelect = document.getElementById('difficultySelect');
 
+        difficultySelect.addEventListener('change', function() {
+            if (!gameRunning) {
+                this.blur();
+                updateDifficultyDisplay();
+                displayLeaderboard();
+            }
+        });
+
+        
         // Game settings
         const gridSize = 20;
         const tileCount = canvas.width / gridSize;
@@ -160,31 +195,45 @@
 
         let needsRedraw = true;
         let lastUpdateTime = 0
-        
-        // High score management
-        function getHighScore() {
-            return parseInt(localStorage.getItem('snakeHighScore')) || 0;
+
+        function getDifficultyKey() {
+            const difficultySelect = document.getElementById('difficultySelect');
+            return `snakeTopScores_${difficultySelect.value}`;
         }
 
-        function setHighScore(score) {
-            const currentHigh = getHighScore();
-            if (score > currentHigh) {
-                localStorage.setItem('snakeHighScore', score);
-                document.getElementById('highScore').textContent = score;
+        function updateDifficultyDisplay() {
+            const difficultySelect = document.getElementById('difficultySelect');
+            const currentDifficulty = document.getElementById('currentDifficulty');
+            const options = {
+                '0.00': 'Viper 🐍',
+                '0.25': 'Python ⚡', 
+                '0.50': 'Anaconda 💀',
+                '1.00': 'King Cobra 🔥'
+            };
+            currentDifficulty.textContent = options[difficultySelect.value] || 'Viper 🐍';
+        }
+
+        function toggleDifficultySelector() {
+            if (gameRunning) {
+                difficultySelect.disabled = true;
+                difficultySelect.style.opacity = '0.5';
+                difficultySelect.style.cursor = 'not-allowed';
+            } else {
+                difficultySelect.disabled = false;
+                difficultySelect.style.opacity = '1';
+                difficultySelect.style.cursor = 'pointer';
             }
-        }
-
-        function updateHighScoreDisplay() {
-            document.getElementById('highScore').textContent = getHighScore();
         }
 
         // Leaderboard management
         function getLeaderboard() {
-            const scores = localStorage.getItem('snakeTopScores');
+            const key = getDifficultyKey();
+            const scores = localStorage.getItem(key);
             return scores ? JSON.parse(scores) : [];
         }
         
         function updateLeaderboard(newScore) {
+            const key = getDifficultyKey();
             let scores = getLeaderboard();
             
             // Add new score
@@ -195,7 +244,7 @@
             scores = scores.slice(0, 5);
             
             // Save back to localStorage
-            localStorage.setItem('snakeTopScores', JSON.stringify(scores));
+            localStorage.setItem(key, JSON.stringify(scores));
             
             // Update display
             displayLeaderboard();
@@ -259,6 +308,12 @@
                         x: Math.floor(Math.random() * tileCount),
                         y: Math.floor(Math.random() * tileCount)
                     };
+
+                    const head = snake[0]; // Snake head position
+                                
+                    // No bad apple directly in fron of the snake with a 3-tile safety zone
+                    const tooCloseToHead = Math.abs(newBadFood.x - head.x) <= 2 && 
+                                           Math.abs(newBadFood.y - head.y) <= 2;
                     
                     // Check collision with SNAKE
                     const snakeCollision = snake.some(segment => segment.x === newBadFood.x && segment.y === newBadFood.y);
@@ -269,7 +324,7 @@
                     // Check collision with BAD FOOD
                     const badFoodCollision = badFoodList.some(badFood => badFood.x === newBadFood.x && badFood.y === newBadFood.y);
 
-                    validPosition = !snakeCollision && !badFoodCollision && !regularFoodCollision;
+                    validPosition = !snakeCollision && !badFoodCollision && !regularFoodCollision && !tooCloseToHead;
                 }
                 
                 if (validPosition) {
@@ -353,16 +408,19 @@
         function update() {
             if (!gameRunning) return;
 
+            // Get next direction from queue OR use current dx/dy
+            let nextDx = dx;
+            let nextDy = dy;
             if (inputQueue.length > 0) {
-                const queuedDirection = inputQueue.shift();
-                dx = queuedDirection.dx;
-                dy = queuedDirection.dy;
+                const queued = inputQueue.shift();
+                nextDx = queued.dx;
+                nextDy = queued.dy;
             }
 
             // Don't move if no direction set
-            if (dx === 0 && dy === 0) return;
+            if (nextDx === 0 && nextDy === 0) return;
 
-            const head = {x: snake[0].x + dx, y: snake[0].y + dy};
+            const head = {x: snake[0].x + nextDx, y: snake[0].y + nextDy};
             
             // Check wall collision
             if (head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount) {
@@ -388,6 +446,9 @@
             
             snake.unshift(head);
 
+            dx = nextDx;
+            dy = nextDy;
+            
             // Check food collision
             if (head.x === food.x && head.y === food.y) {
 
@@ -400,10 +461,7 @@
                 
                 score += 10;
                 scoreElement.textContent = score;
-                updateLevelDisplay(score); 
-
-                // Update high score
-                setHighScore(score);
+                updateLevelDisplay(score);
                 
                 gameSpeed = getGameSpeed(score);
                 
@@ -445,8 +503,11 @@
             gameRunning = false;
             gameOverElement.style.visibility = 'visible';
 
-            // ADD: Update leaderboard with FINAL score only
+            // Update leaderboard with FINAL score only
             updateLeaderboard(score);
+
+            // Toggle difficulty selector to ON
+            toggleDifficultySelector();
 
             // Play sound
             if (soundToggle.checked) {
@@ -463,10 +524,12 @@
             dy = 0;
             score = 0;
             scoreElement.textContent = score;
-            updateLevelDisplay(score); 
-            updateHighScoreDisplay();
+            updateLevelDisplay(score);
             gameOverElement.style.visibility = 'hidden';
             gameRunning = true;
+            
+            // Toggle difficulty selector to ON
+            toggleDifficultySelector();
             
             // Resets game speed to default
             gameSpeed = 150
@@ -563,8 +626,12 @@
         // Initialize and start
         randomFood();
         randomBadFood()
-        updateHighScoreDisplay();
+        updateDifficultyDisplay();
         displayLeaderboard();
+        
+        // Toggle difficulty selector to ON
+        // toggleDifficultySelector();
+        
         requestAnimationFrame(gameLoop);
     </script>
 </body>
