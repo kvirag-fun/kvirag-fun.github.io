@@ -45,6 +45,11 @@
             font-size: 14px;
             text-shadow: 0 0 5px #00ffff;
         }
+
+        #difficultySelect:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
         
         #difficultySelect {
             background: #16213e;
@@ -130,15 +135,6 @@
             </div>
         </div>
     </div>
-
-    <script>
-        const difficultySelect = document.getElementById('difficultySelect');
-        difficultySelect.addEventListener('change', function() {
-            this.blur();
-            updateDifficultyDisplay();
-            displayLeaderboard();
-        });
-    </script>
     
     <!-- Game canvas -->
     <canvas id="gameCanvas" width="400" height="400"></canvas>
@@ -150,7 +146,7 @@
         </div>
     </div>
 
-    <div class="version">v<span id="version">0.3.18</span></div>
+    <div class="version">v<span id="version">0.3.19</span></div>
     
     <script>
         const canvas = document.getElementById('gameCanvas');
@@ -159,7 +155,17 @@
         const levelElement = document.getElementById('level');
         const gameOverElement = document.getElementById('gameOver');
         const soundToggle = document.getElementById('soundToggle');
+        const difficultySelect = document.getElementById('difficultySelect');
 
+        difficultySelect.addEventListener('change', function() {
+            if (!gameRunning) {
+                this.blur();
+                updateDifficultyDisplay();
+                displayLeaderboard();
+            }
+        });
+
+        
         // Game settings
         const gridSize = 20;
         const tileCount = canvas.width / gridSize;
@@ -206,7 +212,19 @@
             };
             currentDifficulty.textContent = options[difficultySelect.value] || 'Viper 🐍';
         }
-        
+
+        function toggleDifficultySelector() {
+            if (gameRunning) {
+                difficultySelect.disabled = true;
+                difficultySelect.style.opacity = '0.5';
+                difficultySelect.style.cursor = 'not-allowed';
+            } else {
+                difficultySelect.disabled = false;
+                difficultySelect.style.opacity = '1';
+                difficultySelect.style.cursor = 'pointer';
+            }
+        }
+
         // Leaderboard management
         function getLeaderboard() {
             const key = getDifficultyKey();
@@ -485,8 +503,11 @@
             gameRunning = false;
             gameOverElement.style.visibility = 'visible';
 
-            // ADD: Update leaderboard with FINAL score only
+            // Update leaderboard with FINAL score only
             updateLeaderboard(score);
+
+            // Toggle difficulty selector to ON
+            toggleDifficultySelector();
 
             // Play sound
             if (soundToggle.checked) {
@@ -506,6 +527,9 @@
             updateLevelDisplay(score);
             gameOverElement.style.visibility = 'hidden';
             gameRunning = true;
+            
+            // Toggle difficulty selector to ON
+            toggleDifficultySelector();
             
             // Resets game speed to default
             gameSpeed = 150
@@ -604,6 +628,10 @@
         randomBadFood()
         updateDifficultyDisplay();
         displayLeaderboard();
+        
+        // Toggle difficulty selector to ON
+        toggleDifficultySelector();
+        
         requestAnimationFrame(gameLoop);
     </script>
 </body>
