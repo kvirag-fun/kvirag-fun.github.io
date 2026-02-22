@@ -146,7 +146,7 @@
         </div>
     </div>
 
-    <div class="version">v<span id="version">0.3.26</span></div>
+    <div class="version">v<span id="version">0.3.28</span></div>
     
     <script>
         const canvas = document.getElementById('gameCanvas');
@@ -164,7 +164,6 @@
                 displayLeaderboard();
             }
         });
-
         
         // Game settings
         const gridSize = 20;
@@ -196,6 +195,15 @@
         let needsRedraw = true;
         let lastUpdateTime = 0
 
+        //Handle splash screen image
+        const splashImage = new Image();
+        let splashLoaded = false;
+        
+        splashImage.onload = () => {
+            splashLoaded = true;
+        };
+        splashImage.src = 'snake_splash_screen.png';
+        
         function getDifficultyKey() {
             const difficultySelect = document.getElementById('difficultySelect');
             return `snakeTopScores_${difficultySelect.value}`;
@@ -339,6 +347,24 @@
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = '#0f3460';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // If game is not running, draw splash image and return
+            if (!gameRunning && splashLoaded) {
+                // Draw centered in the canvas; scale if needed
+                const iw = splashImage.width;
+                const ih = splashImage.height;
+                const cw = canvas.width;
+                const ch = canvas.height;
+        
+                const scale = Math.min(cw / iw, ch / ih); // fit inside canvas
+                const dw = iw * scale;
+                const dh = ih * scale;
+                const dx = (cw - dw) / 2;
+                const dy = (ch - dh) / 2;
+        
+                ctx.drawImage(splashImage, dx, dy, dw, dh);
+                return;
+            }
 
             // Draw food with stem
             ctx.fillStyle = '#ff0000';  // Red apple outline
@@ -527,6 +553,10 @@
             updateLevelDisplay(score);
             gameOverElement.style.visibility = 'hidden';
             gameRunning = true;
+
+            if (splashLoaded) {
+                splashLoaded = false
+            }
             
             // Toggle difficulty selector to ON
             toggleDifficultySelector();
