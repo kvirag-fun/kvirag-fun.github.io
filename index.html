@@ -20,7 +20,7 @@
             
             /* Disable touch controls */
             overflow: hidden;
-            /* touch-action: none;*/
+            touch-action: none;
             overscroll-behavior: none;
 
         }
@@ -146,7 +146,7 @@
         </div>
     </div>
 
-    <div class="version">v<span id="version">0.3.32</span></div>
+    <div class="version">v<span id="version">0.3.33</span></div>
     
     <script>
         const canvas = document.getElementById('gameCanvas');
@@ -654,14 +654,8 @@
         }
 
         // Initialize and start
-        // randomFood();
-        // randomBadFood()
         updateDifficultyDisplay();
         displayLeaderboard();
-        
-        // Toggle difficulty selector to ON
-        // toggleDifficultySelector();
-        
         requestAnimationFrame(gameLoop);
     </script>
 </body>
