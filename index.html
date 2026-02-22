@@ -146,7 +146,7 @@
         </div>
     </div>
 
-    <div class="version">v<span id="version">0.3.23</span></div>
+    <div class="version">v<span id="version">0.3.24</span></div>
     
     <script>
         const canvas = document.getElementById('gameCanvas');
@@ -407,8 +407,6 @@
         // Update game state
         function update() {
             if (!gameRunning) return;
-
-            toggleDifficultySelector();
 
             // Get next direction from queue OR use current dx/dy
             let nextDx = dx;
