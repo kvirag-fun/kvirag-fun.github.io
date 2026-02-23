@@ -40,6 +40,10 @@
             text-align: center;
         }
 
+		.flex-container {
+  			touch-action: none;
+		}
+
         .difficulty-selector {
             margin: 10px 0 10px 0;
             font-size: 14px;
@@ -76,7 +80,6 @@
                 gap: 5px !important;
                 width: 95vw !important;
                 justify-content: center !important;
-                touch-action: none !important;
             }
             
             .leaderboard, .settings { 
@@ -147,7 +150,7 @@
         </div>
     </div>
 
-    <div class="version">v<span id="version">0.3.37</span></div>
+    <div class="version">v<span id="version">0.3.38</span></div>
     
     <script>
         const canvas = document.getElementById('gameCanvas');
